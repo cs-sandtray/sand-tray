@@ -1,0 +1,12 @@
+[
+    {
+        "name": "rock",
+        "pic_name": "rock.png",
+        "psychological": "rock means good"
+    },
+    {
+        "name": "tree",
+        "pic_name": "tree.webp",
+        "psychological": "tree is quite people"
+    }
+]
