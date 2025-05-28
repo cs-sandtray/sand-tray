@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artificial Intelligence Assists in Psychological Sandbox</title>
+    <style>
+        @font-face {
+            font-family: 'Kokonor';
+            src: url('/static/Kokonor.ttf') format('ttf')
+        }
+
+        body {
+            background-image: url("https://bingpic.qdzx.net.cn/2025/CanyonSnow_ZH-CN3910130781_UHD.jpg");
+            padding-top: 50vh;
+        }
+
+        .title {
+            text-align: center;
+            color: white;
+            font-family: 'Kokonor';
+            font-size: 3.2rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .line {
+            width: 20vw;
+            border-color: crimson;
+            border-width: revert;
+            border-style: solid;
+        }
+
+        button {
+            display: block;
+            margin: 2rem auto;
+            background-color: crimson;
+            color: white;
+            font-size: 1.5rem;
+            padding: 0.6rem 2rem;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-family: 'Kokonor';
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: darkred;
+        }
+
+        .nav {
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 1rem;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            margin: 0 1rem;
+            font-family: 'Kokonor';
+        }
+
+        .nav a:hover {
+            text-decoration: underline;
+        }
+
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 60%;
+            font-family: 'Kokonor', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        .modal-content {
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav">
+        <a href="" id="aboutLink">About me</a>
+        <a href="">Rules</a>
+        <a href="">Connect me</a>
+    </div>
+    <h2 class="subtitle">Explore The MENTEA World</h2>
+    <hr class="line">
+    <h1 class="title">Brew Your Mind, Heal Your Heart</h1>
+    <button>Start Play</button>
+
+    <div id="aboutModal" style="display: none;" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>About Me</h2>
+            <p>Welcome to the world of <strong>MENTEA</strong>—a new dimension of self-discovery and reflection!</p>
+            <p>Our AI-supported sandtray platform merges the timeless power of symbolic expression with the
+                possibilities of modern technology. Inspired by traditional sandplay therapy, this interactive space
+                invites users to co-create meaningful visual narratives using carefully selected objects within a
+                digital sandbox.</p>
+            <p>We offer two unique modes of engagement:</p>
+            <ol>
+                <li><strong>AI-Guided Creative SandBox</strong> – where users are gently guided by AI through a journey
+                    of personal exploration.</li>
+                <li><strong>Interactive Co-Creation SandBox</strong> – a turn-based sandtray experience where users and
+                    AI take turns placing objects, sparking dialogue and discovery.</li>
+            </ol>
+            <p>We hope this space becomes your emotional ocean and a wellspring of dreams.<br>
+                Here, may you begin to shape not just stories—but the unique vision of your own inner world.</p>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    const modal = document.getElementById("aboutModal");
+    const aboutLink = document.getElementById("aboutLink");
+    const span = document.querySelector(".close");
+
+    aboutLink.onclick = function (e) {
+        e.preventDefault();
+        modal.style.display = "block";
+    }
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</html>
