@@ -200,24 +200,41 @@
       e.preventDefault();
       const pic_name = e.dataTransfer.getData('text/plain');
       const rect = sandbox.getBoundingClientRect();
-      const x = e.clientX - rect.left - 50;
-      const y = e.clientY - rect.top - 50;
-      const obj = document.createElement('div');
-      obj.className = 'object';
-      obj.style.left = `${x}px`;
-      obj.style.top = `${y}px`;
-      obj.dataset.rotation = 0;
-      obj.style.zIndex = 1000;
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-      obj.style.backgroundImage = `url('/static/elements/${pic_name}')`;
-      obj.style.backgroundRepeat = "round";
-      obj.style.backgroundSize = "100% 100%"
-      obj.style.backgroundPosition = "center"
-      obj.style.backgroundRepeat = "no-repeat"
-      obj.setAttribute("pic_name", pic_name);
+      const img = new Image();
+      img.src = `/static/elements/${pic_name}`;
+      img.onload = () => {
+        const aspectRatio = img.width / img.height;
+        const maxSize = 120;
 
-      sandbox.appendChild(obj);
-      select(obj);
+        let width, height;
+        if (aspectRatio > 1) {
+          width = maxSize;
+          height = maxSize / aspectRatio;
+        } else {
+          height = maxSize;
+          width = maxSize * aspectRatio;
+        }
+
+        const obj = document.createElement('div');
+        obj.className = 'object';
+        obj.style.left = `${x - width / 2}px`;
+        obj.style.top = `${y - height / 2}px`;
+        obj.style.width = `${width}px`;
+        obj.style.height = `${height}px`;
+        obj.dataset.rotation = 0;
+        obj.style.zIndex = 1000;
+        obj.style.backgroundImage = `url('/static/elements/${pic_name}')`;
+        obj.style.backgroundRepeat = "no-repeat";
+        obj.style.backgroundSize = "100% 100%";
+        obj.style.backgroundPosition = "center";
+        obj.setAttribute("pic_name", pic_name);
+
+        sandbox.appendChild(obj);
+        select(obj);
+      };
     });
 
     // 被激活 (选择)
