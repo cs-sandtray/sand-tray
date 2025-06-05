@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="overflow: hidden;">
 <head>
   <meta charset="UTF-8" />
   <title>AI Psychological Sandbox</title>
@@ -31,6 +31,7 @@
       margin: 10px auto;
       background-size: contain;
       background-repeat: no-repeat;
+      background-position: center;
       cursor: grab;
       border: 1px solid #ddd;
       border-radius: 4px;
@@ -53,12 +54,16 @@
       position: absolute;
       width: 100px;
       height: 100px;
-      background-size: contain;
-      background-repeat: no-repeat;
       cursor: pointer;
-      /* 默认层级1 */
       z-index: 1;
       transition: box-shadow 0.2s;
+    }
+    .object img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
     }
     .object.selected {
       outline: 2px solid #3367d6;
@@ -81,8 +86,6 @@
     #export-btn:hover {
       background: linear-gradient(135deg, #5aa0ff, #3c73e6);
     }
-
-    /* 框选选框样式 */
     #selection-rect {
       position: absolute;
       border: 2px dashed #3399ff;
@@ -90,10 +93,7 @@
       pointer-events: none;
       display: none;
       z-index: 9999;
-      user-select: none;
     }
-
-    /* 自定义右键菜单 */
     #context-menu {
       position: absolute;
       background: #fff;
@@ -126,10 +126,7 @@
   <div class="sandbox" id="sandbox"></div>
   <button id="export-btn">Export JSON</button>
 
-  <!-- 框选矩形 -->
   <div id="selection-rect"></div>
-
-  <!-- 右键菜单 -->
   <div id="context-menu">
     <button data-action="bring-forward">向前一层</button>
     <button data-action="send-backward">向后一层</button>
@@ -146,7 +143,7 @@
     let selectionStart = null;
     let selectedObjects = new Set();
 
-    // single Moveable instance
+    // 初始化移动组件
     const mover = new Moveable(document.body, {
       target: [],
       draggable: true,
@@ -172,12 +169,14 @@
         target.style.transform = `rotate(${beforeRotate}deg) scale(${scale})`;
         target.dataset.rotation = beforeRotate;
       })
-      .on('resize', ({ target, width, height }) => {
+      .on('resize', ({ target, width, height, drag }) => {
         target.style.width = `${width}px`;
         target.style.height = `${height}px`;
+        target.style.left = `${drag.beforeTranslate[0]}px`;
+        target.style.top = `${drag.beforeTranslate[1]}px`;
       });
-
-    // load items
+    
+    // 获取所有的元素
     fetch('/api/get_elements')
       .then(res => res.json())
       .then(data => {
@@ -190,31 +189,38 @@
           d.style.backgroundImage = `url('${d.dataset.src}')`;
           sidebar.appendChild(d);
           d.addEventListener('dragstart', e =>
-            e.dataTransfer.setData('text/plain', d.dataset.src)
+            e.dataTransfer.setData('text/plain', i.pic_name)
           );
         });
-      });
+    });
 
-    // drop handler - 拖拽添加元素
+    // 从待选列表中拖出来
     sandbox.addEventListener('dragover', e => e.preventDefault());
     sandbox.addEventListener('drop', e => {
       e.preventDefault();
-      const src = e.dataTransfer.getData('text/plain');
+      const pic_name = e.dataTransfer.getData('text/plain');
       const rect = sandbox.getBoundingClientRect();
       const x = e.clientX - rect.left - 50;
       const y = e.clientY - rect.top - 50;
       const obj = document.createElement('div');
       obj.className = 'object';
-      obj.style.backgroundImage = `url(${src})`;
       obj.style.left = `${x}px`;
       obj.style.top = `${y}px`;
       obj.dataset.rotation = 0;
-      obj.style.zIndex = 1000; // 放最上层
+      obj.style.zIndex = 1000;
+
+      obj.style.backgroundImage = `url('/static/elements/${pic_name}')`;
+      obj.style.backgroundRepeat = "round";
+      obj.style.backgroundSize = "100% 100%"
+      obj.style.backgroundPosition = "center"
+      obj.style.backgroundRepeat = "no-repeat"
+      obj.setAttribute("pic_name", pic_name);
+
       sandbox.appendChild(obj);
       select(obj);
     });
 
-    // 选择单个元素函数，支持单选
+    // 被激活 (选择)
     function select(el) {
       mover.target = el;
       sandbox.querySelectorAll('.object').forEach(o => o.classList.remove('selected'));
@@ -223,11 +229,8 @@
       selectedObjects.add(el);
     }
 
-    // 框选开始
     sandbox.addEventListener('mousedown', e => {
-      if (e.button !== 0) return; // 只允许左键框选
-      if (e.target !== sandbox) return; // 只允许空白区域开始框选
-
+      if (e.button !== 0 || e.target !== sandbox) return;
       selectionStart = { x: e.clientX, y: e.clientY };
       selectionRect.style.left = e.clientX + 'px';
       selectionRect.style.top = e.clientY + 'px';
@@ -235,7 +238,6 @@
       selectionRect.style.height = '0px';
       selectionRect.style.display = 'block';
 
-      // 清空当前选中
       selectedObjects.clear();
       sandbox.querySelectorAll('.object').forEach(o => o.classList.remove('selected'));
 
@@ -259,7 +261,6 @@
 
     function onMouseUp(e) {
       if (!selectionStart) return;
-
       const rect = selectionRect.getBoundingClientRect();
       sandbox.querySelectorAll('.object').forEach(o => {
         const oRect = o.getBoundingClientRect();
@@ -270,22 +271,13 @@
           selectedObjects.add(o);
         }
       });
-
-      // 选中数目决定 Moveable target
-      if (selectedObjects.size === 1) {
-        mover.target = [...selectedObjects][0];
-      } else {
-        mover.target = [];
-      }
-
+      mover.target = selectedObjects.size === 1 ? [...selectedObjects][0] : [];
       selectionRect.style.display = 'none';
       selectionStart = null;
-
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
     }
 
-    // 单击空白区取消选中
     sandbox.addEventListener('click', e => {
       if (e.target === sandbox) {
         mover.target = [];
@@ -294,85 +286,68 @@
       }
     });
 
-    // 单击元素，支持 Ctrl/Shift 多选
     sandbox.addEventListener('click', e => {
-      if (e.target.classList.contains('object')) {
+      if (e.target.closest('.object')) {
+        const obj = e.target.closest('.object');
         if (e.ctrlKey || e.shiftKey) {
-          if (selectedObjects.has(e.target)) {
-            e.target.classList.remove('selected');
-            selectedObjects.delete(e.target);
+          if (selectedObjects.has(obj)) {
+            obj.classList.remove('selected');
+            selectedObjects.delete(obj);
           } else {
-            e.target.classList.add('selected');
-            selectedObjects.add(e.target);
+            obj.classList.add('selected');
+            selectedObjects.add(obj);
           }
           mover.target = [];
         } else {
-          // 单选
           selectedObjects.clear();
           sandbox.querySelectorAll('.object').forEach(o => o.classList.remove('selected'));
-          e.target.classList.add('selected');
-          selectedObjects.add(e.target);
-          mover.target = e.target;
+          obj.classList.add('selected');
+          selectedObjects.add(obj);
+          mover.target = obj;
         }
       }
     });
 
-    // 右键菜单事件
     sandbox.addEventListener('contextmenu', e => {
-      if (e.target.classList.contains('object')) {
+      if (e.target.closest('.object')) {
         e.preventDefault();
-
-        // 右键选中对象，未选中则清空之前选中
-        if (!selectedObjects.has(e.target)) {
+        const obj = e.target.closest('.object');
+        if (!selectedObjects.has(obj)) {
           selectedObjects.clear();
           sandbox.querySelectorAll('.object').forEach(o => o.classList.remove('selected'));
-          e.target.classList.add('selected');
-          selectedObjects.add(e.target);
-          mover.target = e.target;
+          obj.classList.add('selected');
+          selectedObjects.add(obj);
+          mover.target = obj;
         }
-
-        // 显示菜单
         contextMenu.style.left = e.clientX + 'px';
         contextMenu.style.top = e.clientY + 'px';
         contextMenu.style.display = 'block';
       } else {
-        // 右键空白区关闭菜单
         contextMenu.style.display = 'none';
       }
     });
 
-    // 菜单按钮点击
     contextMenu.addEventListener('click', e => {
       if (e.target.tagName !== 'BUTTON') return;
       const action = e.target.dataset.action;
       contextMenu.style.display = 'none';
-
       selectedObjects.forEach(obj => {
         switch (action) {
-          case 'bring-forward':
-            bringForward(obj);
-            break;
-          case 'send-backward':
-            sendBackward(obj);
-            break;
-          case 'delete':
-            obj.remove();
-            break;
+          case 'bring-forward': bringForward(obj); break;
+          case 'send-backward': sendBackward(obj); break;
+          case 'delete': obj.remove(); break;
         }
       });
-
       mover.target = [];
       selectedObjects.clear();
     });
 
-    // 点击页面其他地方关闭菜单
     document.addEventListener('click', e => {
       if (!contextMenu.contains(e.target)) {
         contextMenu.style.display = 'none';
       }
     });
 
-    // z-index 操作函数
     function bringForward(el) {
       let z = parseInt(el.style.zIndex || 0);
       z = Math.min(z + 1, 1000);
@@ -384,17 +359,15 @@
       el.style.zIndex = z;
     }
 
-    // 导出 JSON
     exportBtn.addEventListener('click', () => {
       const arr = [];
-      const p = sandbox.getBoundingClientRect();
       sandbox.querySelectorAll('.object').forEach(el => {
         arr.push({
-          backgroundImage: el.style.backgroundImage,
+          imageSrc: el.getAttribute('pic_name'),
           left: parseFloat(el.style.left),
           top: parseFloat(el.style.top),
-          width: parseFloat(el.style.width),
-          height: parseFloat(el.style.height),
+          width: parseFloat(el.offsetWidth),
+          height: parseFloat(el.offsetHeight),
           rotation: parseFloat(el.dataset.rotation || 0),
           zIndex: parseInt(el.style.zIndex || 0),
         });
