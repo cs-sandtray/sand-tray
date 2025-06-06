@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" style="overflow: hidden;">
+
 <head>
   <meta charset="UTF-8" />
   <title>AI Psychological Sandbox</title>
-  <script src="https://cdn.jsdelivr.net/npm/moveable@latest/dist/moveable.min.js"></script>
+  <script src="/static/moveable.min.js"></script>
+  <script src="/static/html2canvas.min.js"></script>
   <style>
     @font-face {
       font-family: 'Kokonor';
       src: url('/static/Kokonor.ttf') format('truetype');
     }
+
     body {
       margin: 0;
       padding: 0;
@@ -17,6 +20,7 @@
       display: flex;
       background: url('/static/background.jpg') no-repeat center/cover;
     }
+
     .sidebar {
       width: 160px;
       background: rgba(255, 255, 255, 0.95);
@@ -25,6 +29,7 @@
       border-right: 2px solid #ccc;
       box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
     }
+
     .item {
       width: 100px;
       height: 100px;
@@ -37,9 +42,11 @@
       border-radius: 4px;
       transition: transform 0.2s;
     }
+
     .item:hover {
       transform: scale(1.05);
     }
+
     .sandbox {
       flex-grow: 1;
       position: relative;
@@ -50,6 +57,7 @@
       overflow: hidden;
       user-select: none;
     }
+
     .object {
       position: absolute;
       width: 100px;
@@ -58,6 +66,7 @@
       z-index: 1;
       transition: box-shadow 0.2s;
     }
+
     .object img {
       width: 100%;
       height: 100%;
@@ -65,10 +74,12 @@
       pointer-events: none;
       user-select: none;
     }
+
     .object.selected {
       outline: 2px solid #3367d6;
       box-shadow: 0 0 8px #3367d6;
     }
+
     #export-btn {
       position: absolute;
       top: 20px;
@@ -83,9 +94,11 @@
       z-index: 11000;
       user-select: none;
     }
+
     #export-btn:hover {
       background: linear-gradient(135deg, #5aa0ff, #3c73e6);
     }
+
     #selection-rect {
       position: absolute;
       border: 2px dashed #3399ff;
@@ -94,6 +107,7 @@
       display: none;
       z-index: 9999;
     }
+
     #context-menu {
       position: absolute;
       background: #fff;
@@ -106,6 +120,7 @@
       font-family: 'Kokonor', sans-serif;
       user-select: none;
     }
+
     #context-menu button {
       width: 100%;
       padding: 8px 12px;
@@ -115,16 +130,41 @@
       text-align: left;
       font-size: 14px;
     }
+
     #context-menu button:hover {
       background: #3367d6;
       color: white;
     }
+
+    .copyright {
+      position: absolute;
+      bottom: 10px;
+      right: 30px;
+    }
+
+    a {
+      display: inline-block;
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
   </style>
 </head>
+
 <body>
   <div class="sidebar" id="sidebar"></div>
   <div class="sandbox" id="sandbox"></div>
-  <button id="export-btn">Export JSON</button>
+  <button id="export-btn">Export</button>
+  <p class="copyright"><a href="https://github.com/cs-sandtray/sand-tray" target="_blank">Github Repo</a></p>
 
   <div id="selection-rect"></div>
   <div id="context-menu">
@@ -175,7 +215,7 @@
         target.style.left = `${drag.beforeTranslate[0]}px`;
         target.style.top = `${drag.beforeTranslate[1]}px`;
       });
-    
+
     // 获取所有的元素
     fetch('/api/get_elements')
       .then(res => res.json())
@@ -192,7 +232,7 @@
             e.dataTransfer.setData('text/plain', i.pic_name)
           );
         });
-    });
+      });
 
     // 从待选列表中拖出来
     sandbox.addEventListener('dragover', e => e.preventDefault());
@@ -295,7 +335,7 @@
       window.removeEventListener('mouseup', onMouseUp);
     }
 
-    sandbox.addEventListener('click', e => {
+    sandbox.addEventListener('mousedown', e => {
       if (e.target === sandbox) {
         mover.target = [];
         selectedObjects.clear();
@@ -303,9 +343,9 @@
       }
     });
 
-    sandbox.addEventListener('click', e => {
-      if (e.target.closest('.object')) {
-        const obj = e.target.closest('.object');
+    sandbox.addEventListener('mousedown', e => {
+      const obj = e.target.closest('.object');
+      if (obj) {
         if (e.ctrlKey || e.shiftKey) {
           if (selectedObjects.has(obj)) {
             obj.classList.remove('selected');
@@ -389,8 +429,18 @@
           zIndex: parseInt(el.style.zIndex || 0),
         });
       });
+      captureDiv()
       alert(JSON.stringify(arr, null, 2));
     });
   </script>
+  <script>
+    function captureDiv() {
+      html2canvas(sandbox).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        console.log(imgData)
+      });
+    }
+  </script>
 </body>
+
 </html>

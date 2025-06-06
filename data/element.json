@@ -1,12 +1,29 @@
 [
     {
-        "name": "rock",
-        "pic_name": "rock.png",
-        "psychological": "rock means good"
+        "name": "Pine Tree",
+        "pic_name":"Pine_Tree_Model.png",
+        "psychological":"Pine trees usually symbolize resilience, longevity, and hope. In the sand table, pine trees may represent your inner pursuit of resilience and enduring strength, or your hope to maintain stability and optimism in the face of difficulties. Multiple pine trees may indicate your desire and pursuit for these qualities, while also reflecting the growth and harvest you hope to achieve through hard work."
     },
     {
-        "name": "tree",
-        "pic_name": "tree.webp",
-        "psychological": "tree is quite people"
+        "name": "Bamboo",
+        "pic_name":"Bamboo_Sand_Model.png",
+        "psychological" : "Bamboo symbolizes growth, resilience, and the spirit of a gentleman, with abundant psychological energy and a positive attitude. You pursue growth with clear goals, and having multiple bamboo plants may represent your pursuit and expectations for all aspects of life."
+    },
+    {
+        "name":"Red Rose",
+        "pic_name":"Red_Rose_Model.png",
+        "psychological":"The red rose in the sand table symbolizes your desire and pursuit of sweet emotions. It usually represents love, passion, and romance. Multiple red roses may reflect your expectations and longing for love, while also symbolizing your deep pursuit of beautiful emotions."
+    },
+    {
+        "name":"Tent",
+        "pic_name":"Tent_Model.png",
+        "psychological":"Shelter or protection implies instability and temporary status, indicating that individuals may be experiencing a transitional period. And it is related to adventure and exploration, showing an individual's desire for social interaction or group belonging, or expressing an individual's desire to escape reality or avoid facing problems."
+        
+    },
+    {
+        "name":"Lotus",
+        "pic_name":"Lotus_Model.png",
+        "psychological":"Symbolizing the birth, regeneration, and origin of life in the universe, the god of creation of all things, the sun and the sun god. Lotus symbolizes purity and beauty, representing your pursuit of inner purity and spiritual satisfaction in life. High psychological energy, vigorous energy, and clear life goals. In interpersonal relationships, there is a pursuit of harmony and value, while also having high expectations emotionally. You crave emotional expression and understanding in your heart."
+
     }
 ]
