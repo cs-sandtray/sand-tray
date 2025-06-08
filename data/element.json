@@ -2,23 +2,23 @@
     "Plant": [
         {
             "name": "Pine Tree",
-            "pic_name":"Pine_Tree_Model.png",
-            "psychological":"Pine trees usually symbolize resilience, longevity, and hope. In the sand table, pine trees may represent your inner pursuit of resilience and enduring strength, or your hope to maintain stability and optimism in the face of difficulties. Multiple pine trees may indicate your desire and pursuit for these qualities, while also reflecting the growth and harvest you hope to achieve through hard work."
+            "pic_name": "Pine_Tree_Model.png",
+            "psychological": "Pine trees usually symbolize resilience, longevity, and hope. In the sand table, pine trees may represent your inner pursuit of resilience and enduring strength, or your hope to maintain stability and optimism in the face of difficulties. Multiple pine trees may indicate your desire and pursuit for these qualities, while also reflecting the growth and harvest you hope to achieve through hard work."
         },
         {
             "name": "Bamboo",
-            "pic_name":"Bamboo_Model.png",
-            "psychological" : "Bamboo symbolizes growth, resilience, and the spirit of a gentleman, with abundant psychological energy and a positive attitude. You pursue growth with clear goals, and having multiple bamboo plants may represent your pursuit and expectations for all aspects of life."
+            "pic_name": "Bamboo_Model.png",
+            "psychological": "Bamboo symbolizes growth, resilience, and the spirit of a gentleman, with abundant psychological energy and a positive attitude. You pursue growth with clear goals, and having multiple bamboo plants may represent your pursuit and expectations for all aspects of life."
         },
         {
-            "name":"Red Rose",
-            "pic_name":"Red_Rose_Model.png",
-            "psychological":"The red rose in the sand table symbolizes your desire and pursuit of sweet emotions. It usually represents love, passion, and romance. Multiple red roses may reflect your expectations and longing for love, while also symbolizing your deep pursuit of beautiful emotions."
+            "name": "Red Rose",
+            "pic_name": "Red_Rose_Model.png",
+            "psychological": "The red rose in the sand table symbolizes your desire and pursuit of sweet emotions. It usually represents love, passion, and romance. Multiple red roses may reflect your expectations and longing for love, while also symbolizing your deep pursuit of beautiful emotions."
         },
         {
-            "name":"Lotus",
-            "pic_name":"Lotus_Model.png",
-            "psychological":"Symbolizing the birth, regeneration, and origin of life in the universe, the god of creation of all things, the sun and the sun god. Lotus symbolizes purity and beauty, representing your pursuit of inner purity and spiritual satisfaction in life. High psychological energy, vigorous energy, and clear life goals. In interpersonal relationships, there is a pursuit of harmony and value, while also having high expectations emotionally. You crave emotional expression and understanding in your heart."
+            "name": "Lotus",
+            "pic_name": "Lotus_Model.png",
+            "psychological": "Symbolizing the birth, regeneration, and origin of life in the universe, the god of creation of all things, the sun and the sun god. Lotus symbolizes purity and beauty, representing your pursuit of inner purity and spiritual satisfaction in life. High psychological energy, vigorous energy, and clear life goals. In interpersonal relationships, there is a pursuit of harmony and value, while also having high expectations emotionally. You crave emotional expression and understanding in your heart."
         }
     ],
     "Building": [
@@ -116,6 +116,108 @@
             "name": "Fence",
             "pic_name": "Fence_Model.png",
             "psychological": "All represent obstruction. Generally symbolize self-protection, isolation, repression, or internal restriction, often reflecting subconscious feelings of being confined."
-        } 
+        }
+    ],
+    "Animal": [
+        {
+            "name": "Lion",
+            "pic_name": "Lion_Model.png",
+            "psychological": "Symbolizes strength, courage, and leadership. May represent an individual's pursuit of authority or facing challenges."
+        },
+        {
+            "name": "Elephant",
+            "pic_name": "Elephant_Model.png",
+            "psychological": "Symbolizes wisdom, patience, and memory. May indicate an individual's value of memory, knowledge, and long-term goals."
+        },
+        {
+            "name": "Wolf",
+            "pic_name": "Wolf_Model.png",
+            "psychological": "Symbolizes independence, teamwork, and social connection. May reflect a need for belonging or a desire for freedom and autonomy."
+        },
+        {
+            "name": "Bear",
+            "pic_name": "Bear_Model.png",
+            "psychological": "Often represents motherhood, protection, and inner strength. May indicate a need for self-protection or the importance of family and affection."
+        },
+        {
+            "name": "Fish",
+            "pic_name": "Fish_Model.png",
+            "psychological": "Symbolizes emotion, intuition, and creativity. May reflect a deep emotional world and a desire for artistic expression."
+        },
+        {
+            "name": "Bird",
+            "pic_name": "Bird_Model.png",
+            "psychological": "Typically represents freedom, spirituality, and perception. May indicate a longing for freedom and escape from constraints."
+        },
+        {
+            "name": "Snake",
+            "pic_name": "Snake_Model.png",
+            "psychological": "Symbolizes wisdom and transformation. May indicate experiences of change and rebirth or a focus on intuition and intelligence. May also represent fear and danger, revealing hidden worries or fears."
+        },
+        {
+            "name": "Dog",
+            "pic_name": "Dog_Model.png",
+            "psychological": "Typically symbolizes loyalty, friendship, and protection. May reflect attitudes toward friendship and trust."
+        },
+        {
+            "name": "Cat",
+            "pic_name": "Cat_Model.png",
+            "psychological": "Symbolizes independence and intuition. May indicate self-reliance and a curiosity for the unknown."
+        },
+        {
+            "name": "Hedgehog",
+            "pic_name": "Hedgehog_Model.png",
+            "psychological": "Reflects self-protection and inner softness."
+        },
+        {
+            "name": "Rabbit",
+            "pic_name": "Rabbit_Model.png",
+            "psychological": "Commonly associated with fertility, new life, and purity. May symbolize fear, alertness, and a tendency to flee."
+        },
+        {
+            "name": "Fox",
+            "pic_name": "Fox_Model.png",
+            "psychological": "Represents cleverness, wit, and independence. May also symbolize hidden wisdom and deep understanding of life."
+        },
+        {
+            "name": "Deer",
+            "pic_name": "Deer_Model.png",
+            "psychological": "Usually associated with gentleness, grace, and sensitivity. In some cultures, deer also symbolize strength and agility."
+        },
+        {
+            "name": "Turtle",
+            "pic_name": "Turtle_Model.png",
+            "psychological": "Represents longevity, patience, and stability. Often associated with wisdom and caution."
+        },
+        {
+            "name": "Spider",
+            "pic_name": "Spider_Model.png",
+            "psychological": "Symbolizes creativity and destiny. Also associated with wisdom and patience, as spiders weave their webs carefully."
+        },
+        {
+            "name": "Sheep",
+            "pic_name": "Sheep_Model.png",
+            "psychological": "Usually symbolizes purity, obedience, and sacrifice. In some cultures, also a symbol of peace and prosperity."
+        },
+        {
+            "name": "Bull",
+            "pic_name": "Bull_Model.png",
+            "psychological": "Typically symbolizes strength, masculinity, and aggression. Can also represent perseverance and an unyielding spirit, as well as wealth and productivity in some cultures."
+        },
+        {
+            "name": "Calf",
+            "pic_name": "Calf_Model.png",
+            "psychological": "Symbolizes new life, innocence, and vulnerability. May represent a stage of growth and need for care. In adult sandplay, it can indicate inner fragility and longing for childhood."
+        },
+        {
+            "name": "Buffalo",
+            "pic_name": "Buffalo_Model.png",
+            "psychological": "Typically associated with hard work, endurance, and resilience. Symbol of diligence."
+        },
+        {
+            "name": "Butterfly",
+            "pic_name": "Butterfly_Model.png",
+            "psychological": "Symbolizes transformation, growth, and beautiful change. Suggests a child is undergoing positive development or preparing for self-expression during a transformative phase."
+        }
     ]
 }
