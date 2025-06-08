@@ -12,10 +12,14 @@
       src: url('/static/Kokonor.ttf') format('truetype');
     }
 
+    *{
+      font-family: 'Kokonor';
+    }
+
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Kokonor', sans-serif;
+      font-family: 'Kokonor';
       height: 100vh;
       display: flex;
       background: url('/static/background.jpg') no-repeat center/cover;
@@ -161,20 +165,33 @@
     .sidebar {
       text-align: center;
     }
+
+    hr {
+      height: 2px;
+      background-color: grey;
+    }
+    
+    .element-title {
+      font-size: x-large;
+      font-weight: bolder;
+    }
   </style>
 </head>
 
 <body>
-  <div class="sidebar" id="sidebar"></div>
+  <div class="sidebar" id="sidebar">
+    <p class="element-title">Elements</p>
+    <p>Drag elements onto the canvas.</p>
+  </div>
   <div class="sandbox" id="sandbox"></div>
   <button id="export-btn">Export</button>
   <p class="copyright"><a href="https://github.com/cs-sandtray/sand-tray" target="_blank">Github Repo</a></p>
 
   <div id="selection-rect"></div>
   <div id="context-menu">
-    <button data-action="bring-forward">向前一层</button>
-    <button data-action="send-backward">向后一层</button>
-    <button data-action="delete">删除</button>
+    <button data-action="bring-forward">Bring Forward</button>
+    <button data-action="send-backward">Send Backward</button>
+    <button data-action="delete">Delete</button>
   </div>
 
   <script>
@@ -224,21 +241,37 @@
     fetch('/api/get_elements')
       .then(res => res.json())
       .then(data => {
-        elements = data;
-        data.forEach(i => {
-          const d = document.createElement('div');
-          d.className = 'item';
-          d.draggable = true;
-          d.dataset.src = `/static/elements/${i.pic_name}`;
-          d.style.backgroundImage = `url('${d.dataset.src}')`;
-          sidebar.appendChild(d);
-          d.addEventListener('dragstart', e =>
-            e.dataTransfer.setData('text/plain', i.pic_name)
-          );
+        Object.keys(data).forEach(type => {
+          const section = document.createElement('div');
+          section.className = 'type-section';
+          
+          // 类型标题
+          section.appendChild(document.createElement('hr'));
+          const sectionTitle = document.createElement('h3');
+          sectionTitle.innerText = type; 
+          section.appendChild(sectionTitle);
 
-          const tmp = document.createElement('p')
-          tmp.innerText = i.name
-          sidebar.appendChild(tmp)
+          // 遍历每个类型中的元素
+          data[type].forEach(item => {
+            const d = document.createElement('div');
+            d.className = 'item';
+            d.draggable = true;
+            d.dataset.src = `/static/elements/${item.pic_name}`;
+            d.style.backgroundImage = `url('${d.dataset.src}')`;
+            section.appendChild(d);
+
+            // 通过文本展示元素的名称
+            const tmp = document.createElement('p');
+            tmp.innerText = item.name;
+            section.appendChild(tmp);
+
+            d.addEventListener('dragstart', e =>
+              e.dataTransfer.setData('text/plain', item.pic_name)
+            );
+          });
+
+          // 将每个类型的 section 添加到 sidebar 中
+          sidebar.appendChild(section);
         });
       });
 

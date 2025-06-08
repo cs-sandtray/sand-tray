@@ -1,140 +1,121 @@
-[
-    {
-        "name": "Pine Tree",
-        "pic_name":"Pine_Tree_Model.png",
-        "psychological":"Pine trees usually symbolize resilience, longevity, and hope. In the sand table, pine trees may represent your inner pursuit of resilience and enduring strength, or your hope to maintain stability and optimism in the face of difficulties. Multiple pine trees may indicate your desire and pursuit for these qualities, while also reflecting the growth and harvest you hope to achieve through hard work.",
-        "Type":"Plant"
-    },
-    {
-        "name": "Bamboo",
-        "pic_name":"Bamboo_Model.png",
-        "psychological" : "Bamboo symbolizes growth, resilience, and the spirit of a gentleman, with abundant psychological energy and a positive attitude. You pursue growth with clear goals, and having multiple bamboo plants may represent your pursuit and expectations for all aspects of life.",
-        "Type":"Plant"
-    },
-    {
-        "name":"Red Rose",
-        "pic_name":"Red_Rose_Model.png",
-        "psychological":"The red rose in the sand table symbolizes your desire and pursuit of sweet emotions. It usually represents love, passion, and romance. Multiple red roses may reflect your expectations and longing for love, while also symbolizing your deep pursuit of beautiful emotions.",
-        "Type":"Plant"
-    },
-    {
-        "name":"Lotus",
-        "pic_name":"Lotus_Model.png",
-        "psychological":"Symbolizing the birth, regeneration, and origin of life in the universe, the god of creation of all things, the sun and the sun god. Lotus symbolizes purity and beauty, representing your pursuit of inner purity and spiritual satisfaction in life. High psychological energy, vigorous energy, and clear life goals. In interpersonal relationships, there is a pursuit of harmony and value, while also having high expectations emotionally. You crave emotional expression and understanding in your heart.",
-        "Type":"Plant"
-    },
-    {
-        "name": "House",
-        "pic_name": "House_Model.png",
-        "psychological": "Symbolizes home, belonging, and security. Reflects an individual's sense of safety and attitude toward family. Size, shape, and color may reveal expectations for home or belonging.",
-        "Type": "Building"
-    },
-    {
-        "name": "Restaurant",
-        "pic_name": "Restaurant_Model.png",
-        "psychological": "Symbol of satisfaction, nourishment, and self-care. Reflects emotional needs, connection, relationship desires, or control/chaos over food. Indicates a need for safety or being \"fed\" physically/emotionally.",
-        "Type": "Building"
-    },
-    {
-        "name": "Bank",
-        "pic_name": "Bank_Model.png",
-        "psychological": "Represents safety, value, control, and material resources.",
-        "Type": "Building"
-    },
-    {
-        "name": "Tent",
-        "pic_name": "Tent_Model.png",
-        "psychological": "Shelter or protection implies instability and temporary status, indicating that individuals may be experiencing a transitional period. And it is related to adventure and exploration, showing an individual's desire for social interaction or group belonging, or expressing an individual's desire to escape reality or avoid facing problems.",
-        "Type": "Building"
-    },
-    {
-        "name": "Castle",
-        "pic_name": "Castle_Model.png",
-        "psychological": "Represents power, protection, and authority. Reflects desire for control, self-protection, and expectations about family/social status. A closed gate may indicate inner emotional closure.",
-        "Type": "Building"
-    },
-    {
-        "name": "Temple",
-        "pic_name": "Temple_Model.png",
-        "psychological": "Symbolizes faith, spiritual support, and a place to face psychological crises. Reflects spiritual focus, mystery, peace, and inner growth.",
-        "Type": "Building"
-    },
-    {
-        "name": "School",
-        "pic_name": "School_Model.png",
-        "psychological": "Symbol of knowledge, learning, and development. Reflects attitude toward learning, thirst for knowledge, and self-growth.",
-        "Type": "Building"
-    },
-    {
-        "name": "Hospital",
-        "pic_name": "Hospital_Model.png",
-        "psychological": "Represents healing, recovery, and care. Reflects health needs, fear of illness, dependence on care, or social responsibility and moral conscience.",
-        "Type": "Building"
-    },
-    {
-        "name": "Mall",
-        "pic_name": "Mall_Model.png",
-        "psychological": "Symbolizes socializing, trading, and material satisfaction. Reflects attitudes toward material life, interpersonal relationships, and values of consumption.",
-        "Type": "Building"
-    },
-    {
-        "name": "Stadium",
-        "pic_name": "Stadium_Model.png",
-        "psychological": "Represents competition, teamwork, and health. Reflects interest in sports, attitude toward competition, and understanding of collaboration.",
-        "Type": "Building"
-    },
-    {
-        "name": "Public Transportation Facility",
-        "pic_name": "Public_Tansportation_Facility_Model.png",
-        "psychological": "Reflects preference for a specific mode of transit. Symbolizes travel, adventure, curiosity about the unknown, and adaptability to life changes.",
-        "Type": "Building"
-    },
-    {
-        "name": "Boat",
-        "pic_name": "Boat_Model.png",
-        "psychological": "Symbol of exploration, bravery, and adventure. Indicates trying new things, self-challenge, and life-stage transitions. Reflects desire for control and direction in life.",
-        "Type": "Building"
-    },
-    {
-        "name": "Ferris Wheel",
-        "pic_name": "Ferris_Wheel_Model.png",
-        "psychological": "Symbol of authority and masculinity, or connection between reality and consciousness.",
-        "Type": "Building"
-    },
-    {
-        "name": "Window",
-        "pic_name": "Window_Model.png",
-        "psychological": "Symbolizes how one views the world. Open windows = curiosity; closed windows = emotional withdrawal.",
-        "Type": "Building"
-    },
-    {
-        "name": "Lighthouse",
-        "pic_name": "Lighthouse_Model.png",
-        "psychological": "Represents truth, direction, knowledge seeking, and hope for the future.",
-        "Type": "Building"
-    },
-    {
-        "name": "Bridge",
-        "pic_name": "Bridge_Model.png",
-        "psychological": "Symbol of transition and change. Represents inner transformation, possible psychological risks, or a turning point in development.",
-        "Type": "Building"
-    },
-    {
-        "name": "Door",
-        "pic_name": "Door_Model.png",
-        "psychological": "Symbol of roles and awareness; mostly represents interpersonal relationships. Its open/closed state reflects the visitor’s psychological and social engagement.",
-        "Type": "Building"
-    },
-    {
-        "name": "Chimney",
-        "pic_name": "Chimney_Model.png",
-        "psychological": "Chosen by individuals with emotional repression who long for external connection and emotional release but don’t know how.",
-        "Type": "Building"
-    },
-    {
-        "name": "Fence",
-        "pic_name": "Fence_Model.png",
-        "psychological": "All represent obstruction. Generally symbolize self-protection, isolation, repression, or internal restriction, often reflecting subconscious feelings of being confined.",
-        "Type": "Building"
-    } 
-]
+{
+    "Plant": [
+        {
+            "name": "Pine Tree",
+            "pic_name":"Pine_Tree_Model.png",
+            "psychological":"Pine trees usually symbolize resilience, longevity, and hope. In the sand table, pine trees may represent your inner pursuit of resilience and enduring strength, or your hope to maintain stability and optimism in the face of difficulties. Multiple pine trees may indicate your desire and pursuit for these qualities, while also reflecting the growth and harvest you hope to achieve through hard work."
+        },
+        {
+            "name": "Bamboo",
+            "pic_name":"Bamboo_Model.png",
+            "psychological" : "Bamboo symbolizes growth, resilience, and the spirit of a gentleman, with abundant psychological energy and a positive attitude. You pursue growth with clear goals, and having multiple bamboo plants may represent your pursuit and expectations for all aspects of life."
+        },
+        {
+            "name":"Red Rose",
+            "pic_name":"Red_Rose_Model.png",
+            "psychological":"The red rose in the sand table symbolizes your desire and pursuit of sweet emotions. It usually represents love, passion, and romance. Multiple red roses may reflect your expectations and longing for love, while also symbolizing your deep pursuit of beautiful emotions."
+        },
+        {
+            "name":"Lotus",
+            "pic_name":"Lotus_Model.png",
+            "psychological":"Symbolizing the birth, regeneration, and origin of life in the universe, the god of creation of all things, the sun and the sun god. Lotus symbolizes purity and beauty, representing your pursuit of inner purity and spiritual satisfaction in life. High psychological energy, vigorous energy, and clear life goals. In interpersonal relationships, there is a pursuit of harmony and value, while also having high expectations emotionally. You crave emotional expression and understanding in your heart."
+        }
+    ],
+    "Building": [
+        {
+            "name": "House",
+            "pic_name": "House_Model.png",
+            "psychological": "Symbolizes home, belonging, and security. Reflects an individual's sense of safety and attitude toward family. Size, shape, and color may reveal expectations for home or belonging."
+        },
+        {
+            "name": "Restaurant",
+            "pic_name": "Restaurant_Model.png",
+            "psychological": "Symbol of satisfaction, nourishment, and self-care. Reflects emotional needs, connection, relationship desires, or control/chaos over food. Indicates a need for safety or being \"fed\" physically/emotionally."
+        },
+        {
+            "name": "Bank",
+            "pic_name": "Bank_Model.png",
+            "psychological": "Represents safety, value, control, and material resources."
+        },
+        {
+            "name": "Tent",
+            "pic_name": "Tent_Model.png",
+            "psychological": "Shelter or protection implies instability and temporary status, indicating that individuals may be experiencing a transitional period. And it is related to adventure and exploration, showing an individual's desire for social interaction or group belonging, or expressing an individual's desire to escape reality or avoid facing problems."
+        },
+        {
+            "name": "Castle",
+            "pic_name": "Castle_Model.png",
+            "psychological": "Represents power, protection, and authority. Reflects desire for control, self-protection, and expectations about family/social status. A closed gate may indicate inner emotional closure."
+        },
+        {
+            "name": "Temple",
+            "pic_name": "Temple_Model.png",
+            "psychological": "Symbolizes faith, spiritual support, and a place to face psychological crises. Reflects spiritual focus, mystery, peace, and inner growth."
+        },
+        {
+            "name": "School",
+            "pic_name": "School_Model.png",
+            "psychological": "Symbol of knowledge, learning, and development. Reflects attitude toward learning, thirst for knowledge, and self-growth."
+        },
+        {
+            "name": "Hospital",
+            "pic_name": "Hospital_Model.png",
+            "psychological": "Represents healing, recovery, and care. Reflects health needs, fear of illness, dependence on care, or social responsibility and moral conscience."
+        },
+        {
+            "name": "Mall",
+            "pic_name": "Mall_Model.png",
+            "psychological": "Symbolizes socializing, trading, and material satisfaction. Reflects attitudes toward material life, interpersonal relationships, and values of consumption."
+        },
+        {
+            "name": "Stadium",
+            "pic_name": "Stadium_Model.png",
+            "psychological": "Represents competition, teamwork, and health. Reflects interest in sports, attitude toward competition, and understanding of collaboration."
+        },
+        {
+            "name": "Public Transportation Facility",
+            "pic_name": "Public_Tansportation_Facility_Model.png",
+            "psychological": "Reflects preference for a specific mode of transit. Symbolizes travel, adventure, curiosity about the unknown, and adaptability to life changes."
+        },
+        {
+            "name": "Boat",
+            "pic_name": "Boat_Model.png",
+            "psychological": "Symbol of exploration, bravery, and adventure. Indicates trying new things, self-challenge, and life-stage transitions. Reflects desire for control and direction in life."
+        },
+        {
+            "name": "Ferris Wheel",
+            "pic_name": "Ferris_Wheel_Model.png",
+            "psychological": "Symbol of authority and masculinity, or connection between reality and consciousness."
+        },
+        {
+            "name": "Window",
+            "pic_name": "Window_Model.png",
+            "psychological": "Symbolizes how one views the world. Open windows = curiosity; closed windows = emotional withdrawal."
+        },
+        {
+            "name": "Lighthouse",
+            "pic_name": "Lighthouse_Model.png",
+            "psychological": "Represents truth, direction, knowledge seeking, and hope for the future."
+        },
+        {
+            "name": "Bridge",
+            "pic_name": "Bridge_Model.png",
+            "psychological": "Symbol of transition and change. Represents inner transformation, possible psychological risks, or a turning point in development."
+        },
+        {
+            "name": "Door",
+            "pic_name": "Door_Model.png",
+            "psychological": "Symbol of roles and awareness; mostly represents interpersonal relationships. Its open/closed state reflects the visitor’s psychological and social engagement."
+        },
+        {
+            "name": "Chimney",
+            "pic_name": "Chimney_Model.png",
+            "psychological": "Chosen by individuals with emotional repression who long for external connection and emotional release but don’t know how."
+        },
+        {
+            "name": "Fence",
+            "pic_name": "Fence_Model.png",
+            "psychological": "All represent obstruction. Generally symbolize self-protection, isolation, repression, or internal restriction, often reflecting subconscious feelings of being confined."
+        } 
+    ]
+}
