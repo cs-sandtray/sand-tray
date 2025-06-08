@@ -12,7 +12,7 @@
       src: url('/static/Kokonor.ttf') format('truetype');
     }
 
-    *{
+    * {
       font-family: 'Kokonor';
     }
 
@@ -170,10 +170,29 @@
       height: 2px;
       background-color: grey;
     }
-    
+
     .element-title {
       font-size: x-large;
       font-weight: bolder;
+    }
+
+    #save-btn, #load-btn {
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      padding: 6px 12px;
+      background: linear-gradient(135deg, #4f93ff, #3367d6);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 11000;
+      user-select: none;
+    }
+
+    #save-btn:hover, #load-btn:hover {
+      background: linear-gradient(135deg, #5aa0ff, #3c73e6);
     }
   </style>
 </head>
@@ -184,7 +203,9 @@
     <p>Drag elements onto the canvas.</p>
   </div>
   <div class="sandbox" id="sandbox"></div>
-  <button id="export-btn">Export</button>
+  <button id="export-btn">Download Screenshot</button>
+  <button id="save-btn" style="right: 80px;">Save</button>
+  <button id="load-btn">Load</button>
   <p class="copyright"><a href="https://github.com/cs-sandtray/sand-tray" target="_blank">Github Repo</a></p>
 
   <div id="selection-rect"></div>
@@ -198,6 +219,8 @@
     const sidebar = document.getElementById('sidebar');
     const sandbox = document.getElementById('sandbox');
     const exportBtn = document.getElementById('export-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const loadBtn = document.getElementById('load-btn');
     const selectionRect = document.getElementById('selection-rect');
     const contextMenu = document.getElementById('context-menu');
     let elements = [];
@@ -244,11 +267,11 @@
         Object.keys(data).forEach(type => {
           const section = document.createElement('div');
           section.className = 'type-section';
-          
+
           // 类型标题
           section.appendChild(document.createElement('hr'));
           const sectionTitle = document.createElement('h3');
-          sectionTitle.innerText = type; 
+          sectionTitle.innerText = type;
           section.appendChild(sectionTitle);
 
           // 遍历每个类型中的元素
@@ -458,29 +481,78 @@
     }
 
     exportBtn.addEventListener('click', () => {
-      const arr = [];
-      sandbox.querySelectorAll('.object').forEach(el => {
-        arr.push({
-          imageSrc: el.getAttribute('pic_name'),
-          left: parseFloat(el.style.left),
-          top: parseFloat(el.style.top),
-          width: parseFloat(el.offsetWidth),
-          height: parseFloat(el.offsetHeight),
-          rotation: parseFloat(el.dataset.rotation || 0),
-          zIndex: parseInt(el.style.zIndex || 0),
-        });
-      });
-      captureDiv()
-      alert(JSON.stringify(arr, null, 2));
-    });
-  </script>
-  <script>
-    function captureDiv() {
       html2canvas(sandbox).then(canvas => {
         const imgData = canvas.toDataURL("image/png");
-        console.log(imgData)
+
+        // Download
+        const link = document.createElement('a');
+        link.href = imgData;
+        link.download = 'screenshot.png';
+        link.click();
+      })
+    });
+
+    saveBtn.addEventListener('click', () => {
+      const objects = [];
+      sandbox.querySelectorAll('.object').forEach(obj => {
+        const rect = obj.getBoundingClientRect();
+        objects.push({
+          pic_name: obj.getAttribute('pic_name'),
+          left: rect.left - sandbox.getBoundingClientRect().left,
+          top: rect.top - sandbox.getBoundingClientRect().top,
+          width: rect.width,
+          height: rect.height,
+          rotation: obj.dataset.rotation
+        });
       });
-    }
+      localStorage.setItem('sandboxState', JSON.stringify(objects));
+      alert('Sandbox state saved!');
+    });
+
+    // Load state from localStorage
+    loadBtn.addEventListener('click', () => {
+      // Clear the current sandbox content
+      sandbox.innerHTML = '';
+
+      const savedState = JSON.parse(localStorage.getItem('sandboxState'));
+      if (savedState) {
+        savedState.forEach(item => {
+          const img = new Image();
+          img.src = `/static/elements/${item.pic_name}`;
+          img.onload = () => {
+            const aspectRatio = img.width / img.height;
+            const maxSize = 120;
+            let width, height;
+            if (aspectRatio > 1) {
+              width = maxSize;
+              height = maxSize / aspectRatio;
+            } else {
+              height = maxSize;
+              width = maxSize * aspectRatio;
+            }
+
+            const obj = document.createElement('div');
+            obj.className = 'object';
+            obj.style.left = `${item.left}px`;
+            obj.style.top = `${item.top}px`;
+            obj.style.width = `${item.width}px`;
+            obj.style.height = `${item.height}px`;
+            obj.style.transform = `rotate(${item.rotation}deg)`;
+            obj.style.backgroundImage = `url('/static/elements/${item.pic_name}')`;
+            obj.style.backgroundRepeat = "no-repeat";
+            obj.style.backgroundSize = "100% 100%";
+            obj.style.backgroundPosition = "center";
+            obj.setAttribute("pic_name", item.pic_name);
+
+            sandbox.appendChild(obj);
+            select(obj);
+          };
+        });
+        alert('Sandbox state loaded!');
+      } else {
+        alert('No saved state found!');
+      }
+    });
   </script>
 </body>
 
