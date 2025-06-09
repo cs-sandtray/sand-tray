@@ -19,6 +19,46 @@
             "name": "Lotus",
             "pic_name": "Lotus_Model.png",
             "psychological": "Symbolizing the birth, regeneration, and origin of life in the universe, the god of creation of all things, the sun and the sun god. Lotus symbolizes purity and beauty, representing your pursuit of inner purity and spiritual satisfaction in life. High psychological energy, vigorous energy, and clear life goals. In interpersonal relationships, there is a pursuit of harmony and value, while also having high expectations emotionally. You crave emotional expression and understanding in your heart."
+        },
+        {
+            "name": "Vine",
+            "pic_name": "Vine_Model.png",
+            "psychological": "Attachment, emotional entanglement, and lack of independence. Sometimes represents dependency, blurred boundaries, or internal conflict."
+        },
+        {
+            "name": "Cactus",
+            "pic_name": "Cactus_Model.png",
+            "psychological": "Self-protection, inner hardness, and loneliness. Indicates defense mechanisms, emotional detachment, or interpersonal distancing."
+        },
+        {
+            "name": "Crop",
+            "pic_name": "Crop_Model.png",
+            "psychological": "Achievement, nurturing, and stability. Symbolizes effort and reward, and may reflect family, nourishment, or maternal needs."
+        },
+        {
+            "name": "Grass",
+            "pic_name": "Grass_Model.png",
+            "psychological": "Peace, connection to nature, and hope. Expresses a need for inner tranquility and harmony. Green also symbolizes healing and renewal."
+        },
+        {
+            "name": "Willow",
+            "pic_name": "Willow_Model.png",
+            "psychological": "Moon and femininity. Symbol of feminine energy and lunar associations."
+        },
+        {
+            "name": "Fruit Tree",
+            "pic_name": "Fruit_Tree_Model.png",
+            "psychological": "Achievement. Represents accomplishment, harvest, and success. Often associated with immortality, longevity, spring, youth, or marriage."
+        },
+        {
+            "name": "Peony",
+            "pic_name": "Peony_Model.png",
+            "psychological": "Represents wealth, honor, prosperity, and dignity, known for its large blossoms, beauty, vibrant color, and fragrance."
+        },
+        {
+            "name": "Chrysanthemum",
+            "pic_name": "Chrysanthemum_Model.png",
+            "psychological": "A symbol of autumn tranquility and harvest. Represents peace and the fruition of effort."
         }
     ],
     "Building": [
@@ -218,6 +258,63 @@
             "name": "Butterfly",
             "pic_name": "Butterfly_Model.png",
             "psychological": "Symbolizes transformation, growth, and beautiful change. Suggests a child is undergoing positive development or preparing for self-expression during a transformative phase."
+        }
+    ],
+    "Human": [
+        {
+            "name": "Child",
+            "pic_name": "Child_Model.png",
+            "psychological": "Innocence, trauma, and attachment needs. Projects childhood experiences, emotional vulnerability, or a desire to be cared for."
+        },
+        {
+            "name": "Parent",
+            "pic_name": "Parent_Model.png",
+            "psychological": "Authority, belonging, and relational conflict. May symbolize real-life family dynamics or internalized family role identification."
+        },
+        {
+            "name": "Soldier",
+            "pic_name": "Soldier_Model.png",
+            "psychological": "Self-defense, control, and struggle. Represents strength, protection, and rules. Placement may reflect a desire to protect oneself or others, a respect for order, or a need to stand firm."
+        },
+        {
+            "name": "King",
+            "pic_name": "King_Model.png",
+            "psychological": "Self-esteem, dominance, and paternal imagery. Symbolizes a sense of power, desire for control, or attitudes toward authority."
+        },
+        {
+            "name": "Wizard",
+            "pic_name": "Wizard_Model.png",
+            "psychological": "Unconscious, mysterious self, and superego projection. Associated with transformation, wisdom, and self-exploration."
+        },
+        {
+            "name": "Monster",
+            "pic_name": "Monster_Model.png",
+            "psychological": "Shadow self, fear, and trauma source. Represents repressed impulses, self-denial, or perceived threats in life."
+        },
+        {
+            "name": "Lover",
+            "pic_name": "Lover_Model.png",
+            "psychological": "Desire for connection, sexual identity, and emotional attachment. Reflects deep needs for love, intimacy, and being accepted."
+        },
+        {
+            "name": "Religious_Staff",
+            "pic_name": "Religious_Staff_Model.png",
+            "psychological": "Critical phase and supernatural power. Indicates a period of inner transformation and a longing for spiritual support."
+        },
+        {
+            "name": "Elder",
+            "pic_name": "Elder_Model.png",
+            "psychological": "Wisdom. Associated with longevity and insight."
+        },
+        {
+            "name": "Athlete",
+            "pic_name": "Athlete_Model.png",
+            "psychological": "Symbolizes strength, physical activity, and health."
+        },
+        {
+            "name": "Performer",
+            "pic_name": "Performer_Model.png",
+            "psychological": "Symbolizes the persona in social interaction. Reflects how one sees their role in communicating and interacting with others."
         }
     ]
 }
