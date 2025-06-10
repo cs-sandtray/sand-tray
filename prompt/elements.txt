@@ -1,0 +1,10 @@
+Below is the current list of items placed by the user. 
+Each item includes:
+- name: the symbolic identity of the object
+- size: absoulte size (height, width)
+- rotation: rotation angle in degrees (0–360)
+- position: (x, y) coordinates on a 2D sandbox plane
+- sequence: the order in which the object was placed
+
+{%for i in elements%}
+- {{i.pic_name}}, height: {{i.height}}, width: {{i.width}}, rotation: {{i.rotation}}, x: {{i.left}}, y: {{i.top}}{%endfor%}

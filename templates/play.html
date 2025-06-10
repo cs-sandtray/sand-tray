@@ -202,6 +202,19 @@
       background: #0a95f2;
     }
 
+    .analyze-btn {
+      padding: 6px 12px;
+      background: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
     .bookmark-nav {
       width: 60px;
       background: rgba(255, 255, 255, 0.95);
@@ -238,12 +251,14 @@
       top: 0;
       right: -400px;
       width: 300px;
-      height: 100%;
+      box-sizing: border-box;
+      height: 100vh;
       background-color: #f4f4f4;
       box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
       transition: right 0.3s ease;
       z-index: 15000;
-      padding: 20px;
+      padding: 20px 20px 20px 20px;
+      overflow-y: scroll;
     }
 
     .chat-box-open {
@@ -269,8 +284,6 @@
 
     .input-btn-group {
       display: flex;
-      position: absolute;
-      bottom: 0px;
       margin-bottom: 20px;
     }
 
@@ -290,6 +303,17 @@
       padding: 6px 12px;
       cursor: pointer;
     }
+
+    #analyze-result {
+      margin-bottom: 20px;
+    }
+    
+    button:disabled {
+      background-color: #ccc;
+      border-color: #aaa;
+      color: #666;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 
@@ -307,10 +331,12 @@
 
   <button id="chat-box-btn">Chat Box</button>
   <div id="chat-box">
+    <button class="analyze-btn" id="analyze-btn">Analyze your sand tray</button>
     <div class="input-btn-group" style="width: 100%;">
       <input type="text" placeholder="Input" style="width: 100%;font-size: large;" />
       <button style="background-color: #0156ad;color: white;font-size: large;">Send</button>
     </div>
+    <div id="analyze-result"></div>
   </div>
 
   <p class="copyright"><a href="https://github.com/cs-sandtray/sand-tray" target="_blank">Github Repo</a></p>
@@ -677,6 +703,8 @@
   <script>
     const chatBox = document.getElementById("chat-box")
     const chatBoxBtn = document.getElementById("chat-box-btn")
+    const analyzeBtn = document.getElementById("analyze-btn")
+    const analyzeResult = document.getElementById("analyze-result")
     let chatBoxFlag = false
 
     chatBoxBtn.onclick = function () {
@@ -686,12 +714,56 @@
         chatBoxBtn.style.transition = "right 0.2s ease"
       } else {
         chatBox.style.right = "0"
-        chatBoxBtn.style.right = "340px"
+        chatBoxBtn.style.right = "300px"
         chatBoxBtn.style.transition = "right 0.3s ease"
       }
       chatBoxFlag = !chatBoxFlag
     }
     chatBoxBtn.click()
+
+    analyzeBtn.onclick = function(){
+
+      // Dump data
+      const objects = [];
+      sandbox.querySelectorAll('.object').forEach(obj => {
+        const rect = obj.getBoundingClientRect();
+        objects.push({
+          pic_name: obj.getAttribute('pic_name'),
+          left: rect.left - sandbox.getBoundingClientRect().left,
+          top: rect.top - sandbox.getBoundingClientRect().top,
+          width: rect.width,
+          height: rect.height,
+          rotation: obj.dataset.rotation
+        });
+      });
+
+      // get picture
+      html2canvas(sandbox).then(canvas => {
+        analyzeBtn.setAttribute("disabled", "disabled")
+
+        const imgData = canvas.toDataURL("image/png");
+
+        const socket = new WebSocket("ws://localhost:18000/api/analyse");
+
+        socket.onopen = function () {
+          socket.send(JSON.stringify({
+            "objects": objects,
+            "picture": imgData
+          }))
+        }
+
+        // analyzeResult.innerHTML = ""
+
+        socket.onmessage = function (event) {
+          const tmp = JSON.parse(event.data)
+          if(tmp.status === "end"){
+            analyzeBtn.removeAttribute("disabled")
+          }else{
+            analyzeResult.innerHTML += tmp.content;
+          }
+        };
+      })
+    }
   </script>
 </body>
 
