@@ -19,6 +19,6 @@ def white_to_transparent(img_path, output_path, threshold=150):
     img.putdata(new_data)
     img.save(output_path, "PNG")
 
-image_name = "Bull_Model.png"
+image_name = "Willow_Model.png"
 
 white_to_transparent(BASE_DIR / image_name, BASE_DIR / image_name)
