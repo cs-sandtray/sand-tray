@@ -33,7 +33,12 @@ class SandTray:
 
         with open(BASE_DIR / "data" / "element.json", "r") as fp:
             self.elements = json.loads(fp.read())
-        
+
+        self.elements_psychological = {}
+        for i in self.elements.values():
+            for j in i:
+                self.elements_psychological[j["pic_name"]] = j["psychological"]
+
         self.system_prompt = self.read_prompt("system")
         self.elements_prompt = self.read_prompt("elements")
     
@@ -67,6 +72,10 @@ class SandTray:
                     self.logger.info("Recived new analyse request.")
                     message = await websocket.recv()
                     data = json.loads(message)
+
+                    # Bound the element name and psychological
+                    for i in data["objects"]:
+                        i["psychological"] = self.elements_psychological[i["pic_name"]]
 
                     async for i in get_ai_response_stream([
                         {"role": "system", "content": self.system_prompt.render({})},

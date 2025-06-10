@@ -7,4 +7,5 @@ Each item includes:
 - sequence: the order in which the object was placed
 
 {%for i in elements%}
-- {{i.pic_name}}, height: {{i.height}}, width: {{i.width}}, rotation: {{i.rotation}}, x: {{i.left}}, y: {{i.top}}{%endfor%}
+- {{i.pic_name}}, height: {{i.height}}, width: {{i.width}}, rotation: {{i.rotation}}, x: {{i.left}}, y: {{i.top}}
+  - Psychological: {{i.psychological}}{%endfor%}
