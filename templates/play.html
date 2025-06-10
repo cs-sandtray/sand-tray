@@ -719,7 +719,6 @@
       }
       chatBoxFlag = !chatBoxFlag
     }
-    chatBoxBtn.click()
 
     analyzeBtn.onclick = function(){
 
@@ -752,7 +751,7 @@
           }))
         }
 
-        // analyzeResult.innerHTML = ""
+        analyzeResult.innerHTML = ""
 
         socket.onmessage = function (event) {
           const tmp = JSON.parse(event.data)
