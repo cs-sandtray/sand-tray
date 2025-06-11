@@ -60,7 +60,7 @@ class SandTray:
 
         @self.app.route('/play/')
         def play():
-            return render_template('play.html')
+            return render_template('play.html', WS_PORT = WS_PORT, LISTEN_ADDR = LISTEN_ADDR)
 
         @self.app.route('/api/get_elements')
         def get_elements():

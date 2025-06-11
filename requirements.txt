@@ -1,0 +1,6 @@
+flask
+openai
+requests
+websockets == 10.4
+pyyaml
+jinjia2

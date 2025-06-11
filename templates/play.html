@@ -793,28 +793,29 @@
           .then(response => response.json())
           .then(data => {
             img_uid = data.uid
+
+
+            const socket = new WebSocket("ws://{{LISTEN_ADDR}}:{{WS_PORT}}/api/analyse");
+
+            socket.onopen = function () {
+              socket.send(JSON.stringify({
+                "objects": objects,
+                "picture": img_uid
+              }))
+            }
+
+            analyzeResult.innerHTML = ""
+
+            socket.onmessage = function (event) {
+              const tmp = JSON.parse(event.data)
+              if (tmp.status === "end") {
+                analyzeBtn.removeAttribute("disabled")
+              } else {
+                analyzeResult.innerHTML += tmp.content;
+              }
+            };
+            
           });
-
-
-        const socket = new WebSocket("ws://localhost:18000/api/analyse");
-
-        socket.onopen = function () {
-          socket.send(JSON.stringify({
-            "objects": objects,
-            "picture": img_uid
-          }))
-        }
-
-        analyzeResult.innerHTML = ""
-
-        socket.onmessage = function (event) {
-          const tmp = JSON.parse(event.data)
-          if (tmp.status === "end") {
-            analyzeBtn.removeAttribute("disabled")
-          } else {
-            analyzeResult.innerHTML += tmp.content;
-          }
-        };
       })
     }
   </script>
