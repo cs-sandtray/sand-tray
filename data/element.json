@@ -311,5 +311,94 @@
             "pic_name": "Performer_Model.png",
             "psychological": "Symbolizes the persona in social interaction. Reflects how one sees their role in communicating and interacting with others."
         }
+    ],
+    "Vehicle": [
+        {
+            "name": "Bus",
+            "pic_name": "Bus_Model.png",
+            "psychological": "Symbolizes collective experiences, social roles, and life direction. It can reflect an individual's integration into groups or institutions, and how they relate to structured environments."
+        },
+        {
+            "name": "Car",
+            "pic_name": "Car_Model.png",
+            "psychological": "Represents autonomy, control, and personal direction in life. It may reveal one's sense of independence and ability to navigate their personal journey."
+        },
+        {
+            "name": "Police Car",
+            "pic_name": "Police_Car_Model.png",
+            "psychological": "Symbolizes authority, rules, protection, or fear of being controlled. It may reflect inner tension between self-control and external regulations."
+        },
+        {
+            "name": "Truck",
+            "pic_name": "Truck_Model.png",
+            "psychological": "Associated with responsibility, burden, or support. It may represent an individual's capacity to carry emotional or practical loads in life."
+        },
+        {
+            "name": "Ambulance",
+            "pic_name": "Ambulance_Model.png",
+            "psychological": "Reflects urgency, care, and healing. May indicate psychological wounds or a deep need for emotional rescue and attention."
+        },
+        {
+            "name": "Military Vehicle",
+            "pic_name": "Military_Vehicle_Model.png",
+            "psychological": "Symbolizes defense, conflict, and control. Often used to express inner battles, need for protection, or internalized aggression."
+        },
+        {
+            "name": "Taxi",
+            "pic_name": "Taxi_Model.png",
+            "psychological": "Represents transitions, temporary support, or dependence on others to reach goals. It may reflect a desire for direction or being guided through life."
+        },
+        {
+            "name": "Airplane",
+            "pic_name": "Airplane_Model.png",
+            "psychological": "Symbolizes freedom, ambition, and change. Indicates an individual’s desire for escape, perspective, or pursuit of long-distance goals."
+        },
+        {
+            "name": "Ship",
+            "pic_name": "Ship_Model.png",
+            "psychological": "Represents exploration, emotional journey, and navigating the unknown. It may reflect an individual's desire to face life's transitions or inner depths."
+        }
+    ],
+    "Daily Objects": [
+        {
+            "name": "Soccer",
+            "pic_name": "Soccer_Model.png",
+            "psychological": "Symbolizes teamwork, competitiveness, and social engagement. May reflect how a person handles group dynamics and external expectations."
+        },
+        {
+            "name": "Basketball",
+            "pic_name": "Basketball_Model.png",
+            "psychological": "Represents energy, rhythm, and control in a social context. It may highlight emotional responsiveness and desire for group recognition."
+        },
+        {
+            "name": "Piano",
+            "pic_name": "Piano_Model.png",
+            "psychological": "Symbolizes expression, creativity, and inner harmony. May reflect emotional depth and an individual’s need to express their inner world."
+        },
+        {
+            "name": "Violin",
+            "pic_name": "Violin_Model.png",
+            "psychological": "Associated with emotional subtlety, sensitivity, and aesthetic expression. It may indicate longing, grace, or inner tension."
+        },
+        {
+            "name": "Guitar",
+            "pic_name": "Guitar_Model.png",
+            "psychological": "Symbolizes self-expression, freedom, and individuality. Often reflects creative identity and emotional release."
+        },
+        {
+            "name": "Wishing Bottle",
+            "pic_name": "Wishing_Bottle_Model.png",
+            "psychological": "Represents hope, dreams, and secret desires. Often used to project hidden wishes, unspoken needs, or unresolved longings."
+        },
+        {
+            "name": "Balloon",
+            "pic_name": "Balloon_Model.png",
+            "psychological": "Symbolizes celebration, childhood joy, and fragility. It may reflect a desire for freedom, lightness, or escape from heaviness."
+        },
+        {
+            "name": "Book",
+            "pic_name": "Book_Model.png",
+            "psychological": "Represents knowledge, introspection, and untold stories. It may reflect one’s relationship with learning, memory, or personal narrative."
+        }
     ]
 }
