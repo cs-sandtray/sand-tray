@@ -350,6 +350,13 @@
       background-color: #3498db;
       color: white;
     }
+
+    #pen-size-fa {
+      position: absolute;
+      right: 20px;
+      top: 155px;
+      color: #3498db;
+    }
   </style>
 </head>
 
@@ -365,7 +372,11 @@
   <button id="save-btn" style="right: 80px;">Save</button>
   <button id="load-btn">Load</button>
   <button id="water-btn" onclick="toggleDraw()">Water</button>
-  <button id="clean-btn" onclick="toggleClean()">Clean</button>
+  <button id="clean-btn" onclick="toggleClean()">Sand</button>
+  <div id="pen-size-fa">
+    Pen Size: 
+    <input type="range" min="20" max="70" id="pen-size" value="50">
+  </div>
 
   <button id="chat-box-btn">Chat Box</button>
   <div id="chat-box">
@@ -822,6 +833,8 @@
   <script>
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
+
+    const penSize = document.getElementById('pen-size')
     let draw_or_clean = true; // true = draw water, false = erase (sand)
     let if_draw_active = false;
 
@@ -855,8 +868,8 @@
 
       const { x, y } = getMousePos(event);
 
-      const cropWidth = 50;
-      const cropHeight = 50;
+      const cropWidth = penSize.value;
+      const cropHeight = penSize.value;
 
       if (draw_or_clean) {
         let cropX = (x % waterImage.width);
