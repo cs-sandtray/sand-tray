@@ -307,12 +307,48 @@
     #analyze-result {
       margin-bottom: 20px;
     }
-    
+
     button:disabled {
       background-color: #ccc;
       border-color: #aaa;
       color: #666;
       cursor: not-allowed;
+    }
+
+    #water-btn {
+      position: absolute;
+      top: 105px;
+      right: 20px;
+      padding: 6px 12px;
+      padding: 10px 20px;
+      border: 2px solid #3498db;
+      background-color: transparent;
+      color: #3498db;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    #clean-btn {
+      position: absolute;
+      top: 105px;
+      right: 108px;
+      padding: 6px 12px;
+      padding: 10px 20px;
+      border: 2px solid #3498db;
+      background-color: transparent;
+      color: #3498db;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    #clean-btn.active,
+    #water-btn.active {
+      background-color: #3498db;
+      color: white;
     }
   </style>
 </head>
@@ -323,11 +359,13 @@
     <p>Drag elements onto the canvas.</p>
   </div>
   <div class="bookmark-nav" id="bookmarkNav"></div>
-  <div class="sandbox" id="sandbox"></div>
+  <div class="sandbox" id="sandbox"><canvas id="canvas"></canvas></div>
 
   <button id="export-btn">Download Screenshot</button>
   <button id="save-btn" style="right: 80px;">Save</button>
   <button id="load-btn">Load</button>
+  <button id="water-btn" onclick="toggleDraw()">Water</button>
+  <button id="clean-btn" onclick="toggleClean()">Clean</button>
 
   <button id="chat-box-btn">Chat Box</button>
   <div id="chat-box">
@@ -720,7 +758,7 @@
       chatBoxFlag = !chatBoxFlag
     }
 
-    analyzeBtn.onclick = function(){
+    analyzeBtn.onclick = function () {
 
       // Dump data
       const objects = [];
@@ -755,14 +793,207 @@
 
         socket.onmessage = function (event) {
           const tmp = JSON.parse(event.data)
-          if(tmp.status === "end"){
+          if (tmp.status === "end") {
             analyzeBtn.removeAttribute("disabled")
-          }else{
+          } else {
             analyzeResult.innerHTML += tmp.content;
           }
         };
       })
     }
+  </script>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let draw_or_clean = true; // true = draw water, false = erase (sand)
+    let if_draw_active = false;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const sandImage = new Image();
+    sandImage.src = '/static/sand_background.png';
+    const waterImage = new Image();
+    waterImage.src = '/static/water_background.png';
+
+    let painting = false;
+
+    function getMousePos(event) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      };
+    }
+
+    // Sand Background
+    function drawSand() {
+      ctx.drawImage(sandImage, 0, 0, canvas.width, canvas.height);
+    }
+
+    function drawWaterAt(event) {
+      if(!if_draw_active){
+        return;
+      }
+
+      const { x, y } = getMousePos(event);
+
+      const cropWidth = 50;
+      const cropHeight = 50;
+
+      if (draw_or_clean) {
+        let cropX = (x % waterImage.width);
+        let cropY = (y % waterImage.height);
+
+        if (cropX + cropWidth > waterImage.width) {
+          cropX = waterImage.width - cropWidth;
+        }
+        if (cropY + cropHeight > waterImage.height) {
+          cropY = waterImage.height - cropHeight;
+        }
+
+        const gradient = ctx.createRadialGradient(
+          x, y, 0,
+          x, y, cropWidth / 2
+        );
+        // gradient.addColorStop(0, 'rgba(0, 0, 255, 0.6)');
+        // gradient.addColorStop(1, 'rgba(0, 0, 255, 0)');
+
+        ctx.beginPath();
+        ctx.arc(x, y, cropWidth / 2, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        ctx.save();
+
+        ctx.beginPath();
+        ctx.arc(x, y, cropWidth / 2, 0, Math.PI * 2);
+        ctx.clip();
+
+        ctx.drawImage(
+          waterImage,
+          cropX, cropY, cropWidth, cropHeight,
+          x - cropWidth / 2, y - cropHeight / 2, cropWidth, cropHeight
+        );
+
+        ctx.restore();
+      } else {
+
+        let cropX = (x % sandImage.width);
+        let cropY = (y % sandImage.height);
+
+        const gradient = ctx.createRadialGradient(
+          x, y, 0,
+          x, y, cropWidth / 2
+        );
+        // gradient.addColorStop(0, 'rgba(0, 0, 0, 0.6)');
+        // gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        ctx.beginPath();
+        ctx.arc(x, y, cropWidth / 2, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        ctx.save();
+
+        ctx.beginPath();
+        ctx.arc(x, y, cropWidth / 2, 0, Math.PI * 2);
+        ctx.clip();
+
+        ctx.drawImage(
+          sandImage,
+          cropX, cropY, cropWidth, cropHeight,
+          x - cropWidth / 2, y - cropHeight / 2, cropWidth, cropHeight
+        );
+
+        ctx.restore();
+      }
+    }
+
+    canvas.addEventListener('mousedown', (event) => {
+      if(!if_draw_active){
+        const parentEvent = new MouseEvent('mousedown', event);
+        sandbox.dispatchEvent(parentEvent);
+        return;
+      }
+      painting = true;
+      drawWaterAt(event);
+    });
+
+    canvas.addEventListener('mousemove', (event) => {
+      if (painting) {
+        drawWaterAt(event);
+      }
+    });
+
+    canvas.addEventListener('mouseup', () => {
+      painting = false;
+    });
+
+    canvas.addEventListener('touchstart', (event) => {
+      event.preventDefault();
+      painting = true;
+      drawWaterAt(event.touches[0]);
+    });
+
+    canvas.addEventListener('touchmove', (event) => {
+      event.preventDefault();
+      if (painting) {
+        drawWaterAt(event.touches[0]);
+      }
+    });
+
+    canvas.addEventListener('touchend', () => {
+      painting = false;
+    });
+
+    window.onload = function (event) {
+      ctx.drawImage(sandImage, 0, 0, canvas.width, canvas.height);
+    }
+
+    // Btn control
+    let draw_btn_state = false;
+    let clean_btn_state = false;
+    function toggleDraw() {
+      draw_or_clean = true;
+      draw_btn_state = !draw_btn_state;
+      if(clean_btn_state&&draw_btn_state){
+        clean_btn_state = false
+      }
+      updateButtonStates();
+    }
+
+    function toggleClean() {
+      draw_or_clean = false;
+      clean_btn_state = !clean_btn_state;
+      if(draw_btn_state&&clean_btn_state){
+        draw_btn_state = false
+      }
+      updateButtonStates();
+    }
+
+    function updateButtonStates() {
+      const drawBtn = document.getElementById('water-btn');
+      const cleanBtn = document.getElementById('clean-btn');
+
+      if (!(draw_btn_state && clean_btn_state)) {
+        drawBtn.classList.remove('active');
+        cleanBtn.classList.remove('active');
+        if_draw_active = false;
+      }
+
+      if(draw_btn_state){
+        drawBtn.classList.add('active');
+        if_draw_active = true;
+      }
+
+      if(clean_btn_state){
+        cleanBtn.classList.add('active');
+        if_draw_active = true;
+      }
+    }
+
+    updateButtonStates();
   </script>
 </body>
 

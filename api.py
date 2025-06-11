@@ -81,6 +81,7 @@ async def get_ai_response_stream(prompt, model_type="text", response_format=None
             )
 
         async for chunk in response:
+            logger.debug(f"Recived Chunk: {chunk}")
             if chunk.choices:
                 yield chunk.choices[0].delta.content
 

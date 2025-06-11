@@ -26,7 +26,7 @@ class SandTray:
         self.logger = logging.getLogger("sand_tray")
         self.logger.setLevel(logging.DEBUG)
         console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.INFO)
+        console_handler.setLevel(logging.DEBUG)
         formatter = logging.Formatter('[%(asctime)s](%(module)s)[%(levelname)s] %(message)s')
         console_handler.setFormatter(formatter)
         self.logger.addHandler(console_handler)
@@ -72,6 +72,8 @@ class SandTray:
                     self.logger.info("Recived new analyse request.")
                     message = await websocket.recv()
                     data = json.loads(message)
+
+                    self.logger.debug("Recived data from client: {message}")
 
                     # Bound the element name and psychological
                     for i in data["objects"]:
