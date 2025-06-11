@@ -34,7 +34,7 @@ client_vision_async = AsyncOpenAI(
     base_url=BASE_URL_VISION,
 )
 
-def get_ai_response(prompt, model_type="text", response_format=None, cnt=1):
+def get_ai_response(prompt, model_type="text", cnt=1):
     logger.debug(f"Send to API, {json.dumps(prompt, indent=4, separators=(',', ': '), ensure_ascii=False)}")
     try:
         response = None
@@ -42,13 +42,11 @@ def get_ai_response(prompt, model_type="text", response_format=None, cnt=1):
             response = client_text.chat.completions.create(
                 model=MODEL_NAME_TEXT,
                 messages=prompt,
-                response_format=response_format,
             )
         else:
             response = client_vision.chat.completions.create(
                 model=MODEL_NAME_VISION,
                 messages=prompt,
-                response_format=response_format,
             )
     except Exception as e:
         if cnt>3:
@@ -61,7 +59,7 @@ def get_ai_response(prompt, model_type="text", response_format=None, cnt=1):
     return response.choices[0].message.content, response.usage.total_tokens
 
 
-async def get_ai_response_stream(prompt, model_type="text", response_format=None):
+async def get_ai_response_stream(prompt, model_type="text"):
     logger.debug(f"Send to API, {json.dumps(prompt, indent=4, separators=(',', ': '), ensure_ascii=False)}")
     try:
         response = None
@@ -69,14 +67,12 @@ async def get_ai_response_stream(prompt, model_type="text", response_format=None
             response = await client_text_async.chat.completions.create(
                 model=MODEL_NAME_TEXT,
                 messages=prompt,
-                response_format=response_format,
                 stream=True,
             )
         else:
             response = await client_vision_async.chat.completions.create(
                 model=MODEL_NAME_VISION,
                 messages=prompt,
-                response_format=response_format,
                 stream=True,
             )
 
