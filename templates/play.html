@@ -780,12 +780,28 @@
 
         const imgData = canvas.toDataURL("image/png");
 
+        let img_uid = null
+        fetch('/api/upload_img', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            img_data: imgData
+          })
+        })
+          .then(response => response.json())
+          .then(data => {
+            img_uid = data.uid
+          });
+
+
         const socket = new WebSocket("ws://localhost:18000/api/analyse");
 
         socket.onopen = function () {
           socket.send(JSON.stringify({
             "objects": objects,
-            "picture": imgData
+            "picture": img_uid
           }))
         }
 
@@ -832,7 +848,7 @@
     }
 
     function drawWaterAt(event) {
-      if(!if_draw_active){
+      if (!if_draw_active) {
         return;
       }
 
@@ -911,7 +927,7 @@
     }
 
     canvas.addEventListener('mousedown', (event) => {
-      if(!if_draw_active){
+      if (!if_draw_active) {
         const parentEvent = new MouseEvent('mousedown', event);
         sandbox.dispatchEvent(parentEvent);
         return;
@@ -957,7 +973,7 @@
     function toggleDraw() {
       draw_or_clean = true;
       draw_btn_state = !draw_btn_state;
-      if(clean_btn_state&&draw_btn_state){
+      if (clean_btn_state && draw_btn_state) {
         clean_btn_state = false
       }
       updateButtonStates();
@@ -966,7 +982,7 @@
     function toggleClean() {
       draw_or_clean = false;
       clean_btn_state = !clean_btn_state;
-      if(draw_btn_state&&clean_btn_state){
+      if (draw_btn_state && clean_btn_state) {
         draw_btn_state = false
       }
       updateButtonStates();
@@ -982,12 +998,12 @@
         if_draw_active = false;
       }
 
-      if(draw_btn_state){
+      if (draw_btn_state) {
         drawBtn.classList.add('active');
         if_draw_active = true;
       }
 
-      if(clean_btn_state){
+      if (clean_btn_state) {
         cleanBtn.classList.add('active');
         if_draw_active = true;
       }

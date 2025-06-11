@@ -8,6 +8,7 @@ from flask import (
 
 import sys
 import json
+import uuid
 import logging
 import asyncio
 import websockets
@@ -26,7 +27,7 @@ class SandTray:
         self.logger = logging.getLogger("sand_tray")
         self.logger.setLevel(logging.DEBUG)
         console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
+        console_handler.setLevel(logging.INFO)
         formatter = logging.Formatter('[%(asctime)s](%(module)s)[%(levelname)s] %(message)s')
         console_handler.setFormatter(formatter)
         self.logger.addHandler(console_handler)
@@ -41,6 +42,8 @@ class SandTray:
 
         self.system_prompt = self.read_prompt("system")
         self.elements_prompt = self.read_prompt("elements")
+
+        self.img_cache = {}
     
     def read_prompt(self, name):
         template = None
@@ -62,6 +65,13 @@ class SandTray:
         @self.app.route('/api/get_elements')
         def get_elements():
             return jsonify(self.elements)
+        
+        @self.app.route('/api/upload_img', methods=['POST'])
+        def upload_img():
+            img_data = request.get_json().get('img_data')
+            uid = uuid.uuid4().__str__()
+            self.img_cache[uid] = img_data
+            return jsonify({"uid": uid})
     
     def ws_server(self):
 
@@ -85,7 +95,7 @@ class SandTray:
                             {
                                 "type": "image_url",
                                 "image_url": {
-                                    "url": data["picture"]
+                                    "url": self.img_cache[data["picture"]]
                                 },
                             },
                             {"type": "text", "text": self.elements_prompt.render({"elements": data["objects"]})},
@@ -94,6 +104,7 @@ class SandTray:
                         await websocket.send(json.dumps({"status": "success", "content": i}))
 
                     await websocket.send(json.dumps({"status": "end", "content": ""}))
+                    del self.img_cache[data["picture"]]
 
                 except (websockets.exceptions.ConnectionClosedOK,websockets.exceptions.ConnectionClosedError):
                     self.logger.warning("websockets connection closed.")
