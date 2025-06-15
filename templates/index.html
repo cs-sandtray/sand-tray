@@ -97,7 +97,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
-        .close {
+        .close, .close2 {
             color: #aaa;
             float: right;
             font-size: 2rem;
@@ -105,7 +105,7 @@
             cursor: pointer;
         }
 
-        .close:hover {
+        .close:hover, .close2:hover {
             color: black;
         }
 
@@ -130,7 +130,7 @@
 <body>
     <div class="nav">
         <a href="" id="aboutLink">About me</a>
-        <a href="">Rules</a>
+        <a href="" id="ruleLink">Rules</a>
         <a href="">Connect me</a>
     </div>
     <h2 class="subtitle">Explore The MENTEA World</h2>
@@ -159,6 +159,38 @@
         </div>
     </div>
 
+    <div id="ruleModal" style="display: none;" class="modal">
+        <div class="modal-content">
+            <span class="close2">&times;</span>
+            <h2>MENTEA | AI Sandtray Exploration</h2>
+
+            <h3>Basic Rule ～ Question Reflection Mode</h3>
+            <p>Welcome to the MENTEA sandtray experience.</p>
+            <p>In this space, you are invited to express yourself freely—using symbolic objects to build a visual reflection of your inner world. There is no right or wrong, only meaning.</p>
+
+            <h3>How it works</h3>
+            <h3>1. One Object at a Time</h3>
+            <p>Begin by choosing one symbolic item at a time from the object shelf. Drag it into the sandbox and place it wherever you feel it belongs. You can adjust its size, rotation, and position to reflect your intention.</p>
+
+            <h3>2. Free Expression</h3>
+            <p>Each object can represent a feeling, a thought, a relationship, or a memory. You may enter a brief description if you’d like—but you don’t have to. Let the symbols speak for themselves.</p>
+
+            <h3>3. Gentle AI Reflection</h3>
+            <p>After each object is placed, the AI will offer a warm, non-judgmental reflection based on its symbolic meaning and position. These responses are here to help you explore emotional themes and patterns that may emerge.</p>
+
+            <h3>4. Final Summary</h3>
+            <p>Once you've placed at least 5 objects, the AI will provide an overview of your complete sandtray scene, offering insights into possible emotional tones, relational dynamics, or areas of inner growth.</p>
+
+            <h2>Tips For Your Journey</h2>
+            <ul>
+                <li>You are welcome to engage in silence or write freely—there’s no expectation</li>
+                <li>Nothing you place will be judged or saved unless you choose to keep it</li>
+                <li>Your sandtray is a safe space for self-exploration, not a test or diagnosis</li>
+            </ul>
+            <p><strong>This is your space. Your symbols. Your story.<br>You are safe here. You are seen. You are invited to feel.</strong></p>
+        </div>
+    </div>
+
 </body>
 
 <script>
@@ -179,6 +211,22 @@
         if (event.target == modal) {
             modal.style.display = "none";
         }
+        if (event.target == modal2) {
+            modal2.style.display = "none";
+        }
+    }
+    
+    const modal2 = document.getElementById("ruleModal");
+    const ruleLink = document.getElementById("ruleLink");
+    const span2 = document.querySelector(".close2");
+
+    ruleLink.onclick = function (e) {
+        e.preventDefault();
+        modal2.style.display = "block";
+    }
+
+    span2.onclick = function () {
+        modal2.style.display = "none";
     }
 </script>
 
