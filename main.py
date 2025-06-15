@@ -20,7 +20,7 @@ import threading
 from jinja2 import Template
 
 from api import get_ai_response, get_ai_response_stream
-from settings import BASE_DIR, HTTP_PORT, WS_PORT, LISTEN_ADDR
+from settings import BASE_DIR, HTTP_PORT, WS_PORT, LISTEN_ADDR, PROXY_LISTEN_ADDR, PROXY_WS_PORT
 
 class SandTray:
 
@@ -64,7 +64,7 @@ class SandTray:
 
         @self.app.route('/play/')
         def play():
-            return render_template('play.html', WS_PORT = WS_PORT, LISTEN_ADDR = LISTEN_ADDR)
+            return render_template('play.html', WS_PORT = PROXY_WS_PORT, LISTEN_ADDR = PROXY_LISTEN_ADDR)
 
         @self.app.route('/api/get_elements')
         def get_elements():
@@ -88,6 +88,9 @@ class SandTray:
 
             with open(BASE_DIR / "user_data" / fname / "suggestion.txt", "w+") as fp:
                 fp.write(data["content"])
+
+            with open(BASE_DIR / "user_data" / fname / "airesponse.txt", "w+") as fp:
+                fp.write(data["airesponse"])
             
             match = re.match(r'data:image/(?P<ext>.*?);base64,(?P<data>.*)', data["img_data"], re.DOTALL)
             if match:

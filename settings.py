@@ -19,6 +19,9 @@ LISTEN_ADDR = SETTING["listen-addr"]
 HTTP_PORT = SETTING["http-port"]
 WS_PORT = SETTING["ws-port"]
 
+PROXY_WS_PORT = SETTING.get("proxy-ws-port", WS_PORT)
+PROXY_LISTEN_ADDR = SETTING.get("proxy-listen-addr", LISTEN_ADDR)
+
 API_KEY_TEXT = SETTING["api-key-text"]
 BASE_URL_TEXT = SETTING["base-url-text"]
 MODEL_NAME_TEXT = SETTING["model-name-text"]

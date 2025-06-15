@@ -907,7 +907,7 @@
             img_uid = data.uid
 
 
-            const socket = new WebSocket("ws://{{LISTEN_ADDR}}:{{WS_PORT}}/api/analyse");
+            const socket = new WebSocket(`${location.protocol === "https:" ? "wss:" : "ws:"}//{{LISTEN_ADDR}}:{{WS_PORT}}/api/analyse`);
 
             socket.onopen = function () {
               socket.send(JSON.stringify({
@@ -938,6 +938,7 @@
                         objects: objects,
                         img_data: imgData,
                         content: document.getElementById("suggest-text-input").value,
+                        airesponse: outputString,
                       })
                     })
                       .then(response => response.json())

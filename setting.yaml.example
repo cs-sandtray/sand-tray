@@ -2,6 +2,9 @@ listen-addr: "127.0.0.1"
 http-port: 8080
 ws-port: 18000
 
+proxy-listen-addr: "127.0.0.1"
+proxy-ws-port: 18000
+
 api-key: "your-api-key-here"
 base-url: "https://api.example.com"
 model-name: "gpt-4"
