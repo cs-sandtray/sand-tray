@@ -6,9 +6,13 @@ from flask import (
     jsonify
 )
 
+import os
+import re
 import sys
 import json
+import time
 import uuid
+import base64
 import logging
 import asyncio
 import websockets
@@ -72,6 +76,30 @@ class SandTray:
             uid = uuid.uuid4().__str__()
             self.img_cache[uid] = img_data
             return jsonify({"uid": uid})
+        
+        @self.app.route('/api/suggest', methods=['POST'])
+        def suggest():
+            data = request.get_json()
+            fname = str(time.time())
+            os.mkdir(BASE_DIR / "user_data" / fname)
+
+            with open(BASE_DIR / "user_data" / fname / "elements.json", "w+") as fp:
+                fp.write(json.dumps(data["objects"]))
+
+            with open(BASE_DIR / "user_data" / fname / "suggestion.txt", "w+") as fp:
+                fp.write(data["content"])
+            
+            match = re.match(r'data:image/(?P<ext>.*?);base64,(?P<data>.*)', data["img_data"], re.DOTALL)
+            if match:
+                ext = match.group('ext')
+                data = match.group('data')
+                img_data = base64.b64decode(data)
+
+                filename = f"output_image.{ext}"
+                with open(BASE_DIR / "user_data" / fname / filename, 'wb+') as f:
+                    f.write(img_data)
+            
+            return jsonify({"status": "success"})
     
     def ws_server(self):
 

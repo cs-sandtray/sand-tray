@@ -357,6 +357,78 @@
       top: 155px;
       color: #3498db;
     }
+
+    .suggest-link {
+      color: black;
+      padding: 5px;
+      box-shadow: none;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-top: 8px;
+      font-size: large;
+    }
+
+    .modal {
+      position: fixed;
+      z-index: 20000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 2rem;
+      border-radius: 1rem;
+      width: 60%;
+      font-family: 'Kokonor', sans-serif;
+      color: #333;
+      line-height: 1.6;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
+    }
+
+    .modal-content {
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    #suggest-submit-btn {
+      padding: 6px 12px;
+      background: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+    }
   </style>
 </head>
 
@@ -374,20 +446,49 @@
   <button id="water-btn" onclick="toggleDraw()">Water</button>
   <button id="clean-btn" onclick="toggleClean()">Sand</button>
   <div id="pen-size-fa">
-    Pen Size: 
+    Pen Size:
     <input type="range" min="20" max="70" id="pen-size" value="50">
   </div>
 
   <button id="chat-box-btn">Chat Box</button>
   <div id="chat-box">
     <button class="analyze-btn" id="analyze-btn">Analyze your sand tray</button>
-    <div class="input-btn-group" style="width: 100%;">
+    <div class="input-btn-group" style="width: 100%;display: none;">
       <input type="text" placeholder="Input" style="width: 100%;font-size: large;" />
       <button style="background-color: #0156ad;color: white;font-size: large;">Send</button>
     </div>
     <div id="analyze-result"></div>
   </div>
 
+  <!-- Model -->
+  <div id="goodModal" style="display: none;" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Give a suggest to us</h2>
+      <textarea id="suggest-text-input" placeholder="Enter your suggestion here..." style="width: 100%; height: 200px; margin-top: 20px; padding: 15px; font-size: 16px; border: 1px solid #ccc; border-radius: 10px; resize: vertical; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); outline: none; transition: border-color 0.3s ease;"></textarea>
+      <button id="suggest-submit-btn">Submit</button>
+    </div>
+  </div>
+  <script>
+    const modal = document.getElementById("goodModal");
+    const span = document.querySelector(".close");
+
+    function openModel() {
+      modal.style.display = "block";
+    }
+
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+
+  <!-- Footer -->
   <p class="copyright"><a href="https://github.com/cs-sandtray/sand-tray" target="_blank">Github Repo</a></p>
 
   <div id="selection-rect"></div>
@@ -816,16 +917,85 @@
             }
 
             analyzeResult.innerHTML = ""
+            let outputString = ""
 
             socket.onmessage = function (event) {
               const tmp = JSON.parse(event.data)
               if (tmp.status === "end") {
+                analyzeResult.innerHTML += `<a id="suggest-link" class="suggest-link">Give a suggest to us.</a>`
+
+                document.getElementById("suggest-link").onclick = function () {
+
+                  openModel()
+
+                  document.getElementById("suggest-submit-btn").onclick = function () {
+                    fetch('/api/suggest', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        objects: objects,
+                        img_data: imgData,
+                        content: document.getElementById("suggest-text-input").value,
+                      })
+                    })
+                      .then(response => response.json())
+                      .then(data => {
+                        alert("Feedback successful!")
+                        span.click() // Close Model
+                      })
+                  }
+                }
+
                 analyzeBtn.removeAttribute("disabled")
+
               } else {
-                analyzeResult.innerHTML += tmp.content;
+                outputString += tmp.content;
+
+                let htmlText = outputString
+
+                  .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+
+                  // Convert headings
+                  .replace(/^(#{1,6})\s*(.*)$/gm, (_, hashes, content) => {
+                    const level = hashes.length;
+                    return `<h${level}>${content}</h${level}>`;
+                  })
+
+                  // Convert bold
+                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+
+                  // Convert italic
+                  .replace(/(^|[^*])\*(?!\*)(.*?)\*(?!\*)/g, '$1<em>$2</em>')
+
+                  // Convert inline code
+                  .replace(/`([^`]+?)`/g, '<code>$1</code>')
+
+                  // Convert unordered list
+                  .replace(/^\s*[-*+]\s+(.*)$/gm, '<ul><li>$1</li></ul>')
+
+                  // Convert ordered list
+                  .replace(/^\d+\.\s+(.*)$/gm, '<ol><li>$1</li></ol>');
+
+                // Merge adjacent <ul>/<ol>
+                htmlText = htmlText
+                  .replace(/<\/ul>\s*<ul>/g, '')
+                  .replace(/<\/ol>\s*<ol>/g, '');
+
+                // Convert double line breaks to paragraph
+                htmlText = htmlText.replace(/(?:\r?\n){2,}/g, '</p><p>');
+
+                // Wrap in paragraph tags if not already
+                htmlText = `<p>${htmlText}</p>`;
+
+                // Convert single newlines to <br>, except inside pre/code
+                htmlText = htmlText.replace(/(?<!<\/(h\d|li|pre|ul|ol|code)>)\r?\n/g, '<br>');
+
+                analyzeResult.innerHTML = htmlText
               }
             };
-            
+
           });
       })
     }

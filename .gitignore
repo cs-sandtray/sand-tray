@@ -1,7 +1,5 @@
 setting.yaml
-red.gb.state
-secret_setting.json
-*.sav
+user_data/*
 !.gitkeep
 
 # Byte-compiled / optimized / DLL files
