@@ -429,6 +429,19 @@
       font-weight: bold;
       user-select: none;
     }
+
+    #suggest-select-input {
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #333;
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 10px;
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -464,8 +477,16 @@
   <div id="goodModal" style="display: none;" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <h2>Give a suggest to us</h2>
-      <textarea id="suggest-text-input" placeholder="Enter your suggestion here..." style="width: 100%; height: 200px; margin-top: 20px; padding: 15px; font-size: 16px; border: 1px solid #ccc; border-radius: 10px; resize: vertical; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); outline: none; transition: border-color 0.3s ease;"></textarea>
+      <h2>满意度问卷</h2>
+      <p>（请您务必在每一次分析后给予开发者们您的反馈，帮助我们进一步改善您的使用体验）</p>
+      <select id="suggest-select-input">
+        <option>非常满意</option>
+        <option>比较满意</option>
+        <option>一般</option>
+        <option>比较不满意</option>
+        <option>非常不满意</option>
+      </select>
+      <textarea id="suggest-text-input" placeholder="建议 ..." style="width: 100%; height: 200px; margin-top: 20px; padding: 15px; font-size: 16px; border: 1px solid #ccc; border-radius: 10px; resize: vertical; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); outline: none; transition: border-color 0.3s ease;"></textarea>
       <button id="suggest-submit-btn">Submit</button>
     </div>
   </div>
@@ -807,7 +828,11 @@
     // Load state from localStorage
     loadBtn.addEventListener('click', () => {
       // Clear the current sandbox content
-      sandbox.innerHTML = '';
+      Array.from(sandbox.children).forEach(child => {
+        if (child.tagName === 'DIV') {
+          sandbox.removeChild(child);
+        }
+      });
 
       const savedState = JSON.parse(localStorage.getItem('sandboxState'));
       if (savedState) {
@@ -847,6 +872,11 @@
       } else {
         alert('No saved state found!');
       }
+
+      // Remove Select
+      mover.target = [];
+      selectedObjects.clear();
+      sandbox.querySelectorAll('.object').forEach(o => o.classList.remove('selected'));
     });
   </script>
 
@@ -922,7 +952,7 @@
             socket.onmessage = function (event) {
               const tmp = JSON.parse(event.data)
               if (tmp.status === "end") {
-                analyzeResult.innerHTML += `<a id="suggest-link" class="suggest-link">Give a suggest to us.</a>`
+                analyzeResult.innerHTML += `<a id="suggest-link" class="suggest-link">满意度问卷</a> <br>（请您务必在每一次分析后给予开发者们您的反馈，帮助我们进一步改善您的使用体验）`
 
                 document.getElementById("suggest-link").onclick = function () {
 
@@ -939,6 +969,7 @@
                         img_data: imgData,
                         content: document.getElementById("suggest-text-input").value,
                         airesponse: outputString,
+                        score: document.getElementById("suggest-select-input").value
                       })
                     })
                       .then(response => response.json())

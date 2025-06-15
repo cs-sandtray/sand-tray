@@ -87,7 +87,7 @@ class SandTray:
                 fp.write(json.dumps(data["objects"]))
 
             with open(BASE_DIR / "user_data" / fname / "suggestion.txt", "w+") as fp:
-                fp.write(data["content"])
+                fp.write(data["score"] + "; " + data["content"])
 
             with open(BASE_DIR / "user_data" / fname / "airesponse.txt", "w+") as fp:
                 fp.write(data["airesponse"])
