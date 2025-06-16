@@ -333,7 +333,7 @@
     #clean-btn {
       position: absolute;
       top: 105px;
-      right: 108px;
+      right: 115px;
       padding: 6px 12px;
       padding: 10px 20px;
       border: 2px solid #3498db;
@@ -1074,22 +1074,16 @@
       const cropHeight = penSize.value;
 
       if (draw_or_clean) {
+
         let cropX = (x % waterImage.width);
         let cropY = (y % waterImage.height);
-
-        if (cropX + cropWidth > waterImage.width) {
-          cropX = waterImage.width - cropWidth;
-        }
-        if (cropY + cropHeight > waterImage.height) {
-          cropY = waterImage.height - cropHeight;
-        }
 
         const gradient = ctx.createRadialGradient(
           x, y, 0,
           x, y, cropWidth / 2
         );
-        // gradient.addColorStop(0, 'rgba(0, 0, 255, 0.6)');
-        // gradient.addColorStop(1, 'rgba(0, 0, 255, 0)');
+        // gradient.addColorStop(0, 'rgba(0, 0, 0, 0.6)');
+        // gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
         ctx.beginPath();
         ctx.arc(x, y, cropWidth / 2, 0, Math.PI * 2);
