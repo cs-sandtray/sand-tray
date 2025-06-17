@@ -1,10 +1,12 @@
 import requests
 import re
+import json
 from urllib.parse import urljoin
 from concurrent.futures import ThreadPoolExecutor
 import matplotlib.pyplot as plt
+import numpy as np
 
-class SuggestionAnalyzer:
+class EnhancedAnalyzer:
     def __init__(self, base_url):
         self.base_url = base_url
         self.session = requests.Session()
@@ -17,11 +19,19 @@ class SuggestionAnalyzer:
             "非常满意": 5    # "Very Satisfied"
         }
         self.rating_counts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+        self.element_stats = {1: [], 2: [], 3: [], 4: [], 5: []}
         self.total_rating = 0
         self.total_count = 0
 
+    def get_trimmed_mean(self, values):
+        """Calculate mean after removing max and min values"""
+        if len(values) <= 2:
+            return np.mean(values) if values else 0
+        sorted_values = sorted(values)
+        return np.mean(sorted_values[1:-1])  # Exclude first and last
+
     def get_folders(self):
-        """Get all folder names"""
+        """Get all folder names from the base URL"""
         try:
             response = self.session.get(self.base_url, timeout=10)
             response.raise_for_status()
@@ -31,63 +41,110 @@ class SuggestionAnalyzer:
             print(f"Failed to get folder list: {str(e)}")
             return []
 
-    def process_suggestion_file(self, folder):
-        """Process suggestion.txt in each folder"""
+    def process_folder(self, folder):
+        """Process both suggestion.txt and elements.json in a folder"""
+        rating = self.get_folder_rating(folder)
+        if rating is not None:
+            self.process_element_file(folder, rating)
+
+    def get_folder_rating(self, folder):
+        """Extract rating from suggestion.txt"""
         file_url = urljoin(self.base_url, f"{folder}/suggestion.txt")
         try:
             response = self.session.get(file_url, timeout=10)
             response.raise_for_status()
             
-            # Parse a;b format
             match = re.search(r'^(.+?);', response.text)
             if not match:
                 print(f"⚠️ Format error: {folder}/suggestion.txt")
-                return
+                return None
             
             feedback = match.group(1).strip()
-            rating = self.rating_map.get(feedback, None)
+            rating = self.rating_map.get(feedback)
             
             if rating is None:
                 print(f"⚠️ Unknown rating: '{feedback}' in {folder}")
-                return
+                return None
             
             self.rating_counts[rating] += 1
             self.total_rating += rating
             self.total_count += 1
             
             print(f"✔ {folder}: {feedback} → Rating {rating}")
+            return rating
             
         except Exception as e:
-            print(f"❌ Processing failed {folder}: {str(e)}")
+            print(f"❌ Failed to process rating for {folder}: {str(e)}")
+            return None
 
-    def generate_chart(self):
-        """Generate rating distribution chart (English version)"""
+    def process_element_file(self, folder, rating):
+        """Count dictionaries in elements.json"""
+        file_url = urljoin(self.base_url, f"{folder}/elements.json")
+        try:
+            response = self.session.get(file_url, timeout=10)
+            response.raise_for_status()
+            
+            data = json.loads(response.text)
+            if isinstance(data, list):
+                dict_count = sum(1 for item in data if isinstance(item, dict))
+                self.element_stats[rating].append(dict_count)
+                print(f"📊 {folder}: Found {dict_count} dictionaries")
+            else:
+                print(f"⚠️ elements.json in {folder} is not a list")
+            
+        except Exception as e:
+            print(f"❌ Failed to process elements.json in {folder}: {str(e)}")
+
+    def generate_combined_chart(self):
+        """Create visualization with rating distribution and trimmed averages"""
+        plt.figure(figsize=(12, 7))
+        
         ratings = sorted(self.rating_counts.keys())
-        counts = [self.rating_counts[r] for r in ratings]
-        labels = [f"Rating {r}" for r in ratings]
+        bar_counts = [self.rating_counts[r] for r in ratings]
+        line_avgs = [self.get_trimmed_mean(self.element_stats[r]) for r in ratings]
         
-        plt.figure(figsize=(10, 6))
-        bars = plt.bar(labels, counts, color=['#ff6b6b', '#ffa502', '#feca57', '#2ecc71', '#1dd1a1'])
+        # Bar chart (rating distribution)
+        bars = plt.bar(
+            [f"Rating {r}" for r in ratings], 
+            bar_counts, 
+            color=['#ff6b6b', '#ffa502', '#feca57', '#2ecc71', '#1dd1a1'],
+            alpha=0.7,
+            label='Rating Count'
+        )
         
-        # Add value labels
+        # Line chart (trimmed averages)
+        ax2 = plt.gca().twinx()
+        line, = ax2.plot(
+            [f"Rating {r}" for r in ratings], 
+            line_avgs, 
+            color='#3498db', 
+            marker='o', 
+            markersize=8,
+            linewidth=3,
+            label='Trimmed Avg Elements'
+        )
+        
+        # Add data labels
         for bar in bars:
             height = bar.get_height()
             plt.text(bar.get_x() + bar.get_width()/2., height,
                     f'{int(height)}', ha='center', va='bottom')
         
-        plt.title('User Rating Distribution', fontsize=15, pad=20)
-        plt.xlabel('Rating Level', labelpad=10)
-        plt.ylabel('Count', labelpad=10)
-        plt.grid(axis='y', alpha=0.4)
-        plt.tight_layout()
+        for x, y in zip(ratings, line_avgs):
+            ax2.text(x-1, y, f'{y:.1f}', ha='center', va='bottom', color='#3498db')
         
-        # Save chart
+        # Chart styling
+        plt.title('Rating Distribution & Trimmed Average Elements', fontsize=16)
+        plt.xlabel('Rating Level', fontsize=12)
+        ax2.set_ylabel('Average Dictionaries (trimmed)', fontsize=12)
+        plt.ylabel('Rating Count', fontsize=12)
+        plt.grid(axis='y', alpha=0.3)
+        plt.legend([bars[0], line], ['Rating Count', 'Trimmed Avg'])
+        plt.tight_layout()
         plt.show()
-        print("\n📈 Chart generated: rating_distribution.png")
-
 
     def analyze(self):
-        """Run analysis"""
+        """Run complete analysis"""
         print(f"🔍 Analyzing {self.base_url}")
         
         folders = self.get_folders()
@@ -97,29 +154,42 @@ class SuggestionAnalyzer:
         
         print(f"Found {len(folders)} folders")
         
-        # Multi-thread processing
         with ThreadPoolExecutor(max_workers=10) as executor:
-            executor.map(self.process_suggestion_file, folders)
+            list(executor.map(self.process_folder, folders))
         
         if self.total_count == 0:
             print("⚠️ No valid rating data found")
             return
         
-        average = round(self.total_rating / self.total_count, 2)
+        # Calculate statistics
+        average_rating = round(self.total_rating / self.total_count, 2)
+        
         print(f"\n📊 Analysis Results:")
-        print(f"- Valid responses: {self.total_count}")
-        print(f"- Total rating: {self.total_rating}")
-        print(f"- Average rating: {average}")
+        print(f"- Total responses: {self.total_count}")
+        print(f"- Average rating: {average_rating}")
         
         print("\n📋 Rating Distribution:")
         for rating, count in sorted(self.rating_counts.items()):
-            print(f"- Rating {rating}: {count} counts")
+            print(f"- Rating {rating}: {count} responses")
         
-        # Generate chart
-        self.generate_chart()
+        print("\n📦 Elements Analysis (trimmed means):")
+        for rating in sorted(self.element_stats.keys()):
+            counts = self.element_stats[rating]
+            if counts:
+                original = np.mean(counts)
+                trimmed = self.get_trimmed_mean(counts)
+                print(f"- Rating {rating}:")
+                print(f"  • Original mean: {original:.1f} dicts")
+                print(f"  • Trimmed mean:  {trimmed:.1f} dicts")
+                print(f"  • Sample size:  {len(counts)} folders")
+            else:
+                print(f"- Rating {rating}: No elements data")
+        
+        self.generate_combined_chart()
+        print("\n✅ Analysis complete. Chart saved as rating_analysis.png")
 
 if __name__ == "__main__":
-    analyzer = SuggestionAnalyzer(
+    analyzer = EnhancedAnalyzer(
         base_url="https://sandtray.qdzx.net.cn/user_data/"
     )
     analyzer.analyze()
