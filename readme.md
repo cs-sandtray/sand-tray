@@ -10,3 +10,5 @@ We offer two unique modes of engagement:
 
 We hope this space becomes your emotional ocean and a wellspring of dreams.
 Here, may you begin to shape not just stories—but the unique vision of your own inner world.
+
+Our research paper: [Final_Paper_of_Sand_Tray.pdf](https://github.com/user-attachments/files/20970913/Final_Paper_of_Sand_Tray.pdf)
